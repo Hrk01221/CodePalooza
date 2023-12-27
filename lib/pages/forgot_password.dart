@@ -76,7 +76,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }on FirebaseAuthException catch (e) {
       ErrorShowMessage(context, e.code);
     }
+
   }
+
 
   void ErrorShowMessage(BuildContext context, String text) {
     showGeneralDialog(
@@ -200,7 +202,24 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           ),
         ),
 
-        const SizedBox(height: 200,),
+        const SizedBox(height: 25,),
+        GestureDetector(
+          onTap: (){
+            Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context){
+              return Authpage();
+            })
+            );
+          },
+          child: Text(
+            'Go Back',
+            style: TextStyle(
+                color: Colors.grey[700],
+                fontFamily: 'Comfortaa'
+            ),
+          ),
+        ),
+        const SizedBox(height: 150,),
       ],
     ),
     ),
