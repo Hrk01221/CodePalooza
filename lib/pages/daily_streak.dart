@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:realpalooza/pages/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -89,11 +90,17 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                 children: [
                   Text(
                     '$_currentStreak Day Streak!',
-                    style: TextStyle(fontSize: 24),
+                    style: TextStyle(
+                        color: Color(0xff26b051),
+                        fontFamily: 'Comfortaa',
+                        fontSize: 24),
                   ),
                   Text(
                     'Solve problems daily to maintain your streak.',
-                    style: TextStyle(fontStyle: FontStyle.italic),
+                    style: TextStyle(
+                        color: Color(0xff26b051),
+                        fontFamily: 'Comfortaa',
+                        fontStyle: FontStyle.italic),
                   ),
                   SizedBox(height: 20),
                   Row(
@@ -122,7 +129,8 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                                     Duration(days: 6 - index))),
                                 style: TextStyle(
                                     fontSize: 16,
-                                    color: Colors.green[900]
+                                    color: Color(0xff26b051),
+                                    fontFamily: 'Comfortaa'
                                 ),
                               ),
                             ],
@@ -138,12 +146,19 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                 right: 6,
                 child: GestureDetector(
                   onTap: () {
-                    // Add your onPressed logic here
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return HomePage();
+                        },
+                      ),
+                    );
                   },
                   child: Icon(
                     Icons.close,
                     size: 20,
-                    color: Colors.green[900],
+                    color: Color(0xff26b051),
                   ),
                 ),
               ),
