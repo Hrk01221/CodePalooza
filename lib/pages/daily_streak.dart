@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:realpalooza/pages/homepage.dart';
+import 'package:realpalooza/Screens/base_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-
 
 class DailyStreakScreen extends StatefulWidget {
   @override
@@ -150,7 +149,7 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return HomePage();
+                          return BaseScreen();
                         },
                       ),
                     );

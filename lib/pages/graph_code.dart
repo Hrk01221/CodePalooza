@@ -32,7 +32,7 @@ class Graph extends StatelessWidget {
 class PerformanceChart extends StatelessWidget {
   // Sample data for demonstration
   final List<String> judges = ["AtCoder", "CodeChef", "Codeforces"];
-  final List<double> plusPoints = [35, 30, 70]; // Total plus points for each judge
+  final List<double> plusPoints = [70,35,30]; // Total plus points for each judge
   final List<Color> barColors = [Colors.blueGrey.shade300, Colors.brown, Colors.red]; // Colors for each judge
 
   // Function to calculate the percentage for AtCoder
@@ -78,14 +78,20 @@ class PerformanceChart extends StatelessWidget {
               return '';
             },
           ),
-          /*leftTitles: SideTitles(
-            showTitles: true,
+          leftTitles: SideTitles(
+            showTitles: false,
             getTitles: (value) {
               return value.toString();
             },
-          ),*/
+          ),
+          rightTitles: SideTitles(
+            showTitles: false,
+            getTitles: (value) {
+              return value.toString();
+            },
+          ),
         ),
-        borderData: FlBorderData(show: true),
+        borderData: FlBorderData(show: true,border: Border.all(color: Colors.green),),
         barGroups: [
           BarChartGroupData(
             x: 0,

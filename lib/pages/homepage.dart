@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
   //sign user out
   void signUserOut(){
     try{
-      print("something");
        GoogleSignIn().signOut();
       FirebaseAuth.instance.signOut();
     }on FirebaseAuthException catch(e){
@@ -24,55 +23,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xffe4f3ec),
-        actions: [IconButton(
-          onPressed: signUserOut, icon: Icon(Icons.logout))],),
-      backgroundColor: Color(0xffe4f3ec),
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ZoomIn(child: Text('Logged in As : '+user.email!,
-              style: TextStyle(
-                  color: Color(0xff26b051),
-                  fontSize: 15,
-                  fontFamily: 'Comfortaa'
-              ),),),
-                const SizedBox(height: 50,),
-                ZoomIn(child: MyButton(
-                  text: 'Daily Streak',
-                  onTap: (){
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DailyStreakScreen(),
-                        )
-                    );
-                  },
-                )),
-                const SizedBox(height: 40,),
-                ZoomIn(child: MyButton(
-                  text: 'Show Graph',
-                  onTap: (){
-                    //Navigator.pop(context);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return Graph();
-                        },
-                      ),
-                    );
-                  },
-                ))
-              ],
-            ),
-          ),
-        ),
-      )
 
     );
   }
