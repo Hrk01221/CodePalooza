@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:realpalooza/Screens/profile.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
+import 'package:realpalooza/pages/schedule.dart';
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
@@ -26,19 +27,15 @@ class _BaseScreenState extends State<BaseScreen> {
 
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetoptions = <Widget>[
+  static List<Widget> _widgetoptions = <Widget>[
     Profile(),
     Profile(),
-    Profile(),
+    Schedule(),
     Profile(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xffe4f3ec),
-        actions: [IconButton(
-            onPressed: signUserOut, icon: Icon(Icons.logout))],),
       body: Center(
         child: _widgetoptions.elementAt(_selectedIndex),
       ),
