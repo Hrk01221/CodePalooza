@@ -10,3 +10,6 @@ const iccpOutlined = 'lib/images/cp_green.png';
 const profileImage = 'lib/images/Prof_pic.jpg';
 const graph = 'lib/images/barChart.png';
 const calender = 'lib/images/calendar.png';
+const emptyProfile = 'lib/images/emptyprofile.jpg';
+const think = 'lib/images/skill.png';
+const logout = 'lib/images/logout.png';

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:realpalooza/Screens/profile.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
@@ -16,14 +15,6 @@ class _BaseScreenState extends State<BaseScreen> {
 
   final user = FirebaseAuth.instance.currentUser!;
   //sign user out
-  void signUserOut(){
-    try{
-      GoogleSignIn().signOut();
-      FirebaseAuth.instance.signOut();
-    }on FirebaseAuthException catch(e){
-      print(e.code);
-    }
-  }
 
   int _selectedIndex = 0;
 
@@ -36,19 +27,23 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Center(
         child: _widgetoptions.elementAt(_selectedIndex),
       ),
-
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(
-            canvasColor: const Color(0xffe4f3ec),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25.0),
+          topRight: Radius.circular(25.0),
         ),
-            child: BottomNavigationBar(
+        child: Theme(
+          data: Theme.of(context).copyWith(
+            canvasColor: const Color(0xffbbefd8),
+          ),
+          child: BottomNavigationBar(
             type: BottomNavigationBarType.shifting,
             selectedItemColor: const Color(0xff26b051),
-            selectedLabelStyle: const TextStyle(color: Colors.black,fontFamily: 'Comfortaa'),
+            selectedLabelStyle: const TextStyle(
+                color: Colors.black, fontFamily: 'Comfortaa'),
             items: [
               BottomNavigationBarItem(
                 activeIcon: Image.asset(
@@ -98,12 +93,11 @@ class _BaseScreenState extends State<BaseScreen> {
             currentIndex: _selectedIndex,
             onTap: (int index) {
               setState(() {
-                if(index==3){
-                  signUserOut();
-                }
                 _selectedIndex = index;
               });
-            }),
+            },
+          ),
+        ),
       ),
     );
   }

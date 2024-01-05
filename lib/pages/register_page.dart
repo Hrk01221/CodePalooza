@@ -3,10 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:realpalooza/components/my_button.dart';
 import 'package:realpalooza/components/my_text_field.dart';
 import 'package:realpalooza/components/square_tile.dart';
+import 'package:realpalooza/constant/icons.dart';
 class RegisterPage extends StatefulWidget {
   final Function()? ontap;
 
@@ -91,7 +91,12 @@ class _RegisterPageState extends State<RegisterPage> {
         .collection("Users")
         .doc(userCredential.user!.email)
         .set({
-        'username' : emailcontroller.text.split('@')[0]
+          'dp' : emptyProfile,
+          'username' : emailcontroller.text.split('@')[0],
+          'codeForces': 'Empty',
+          'codeChef' : 'Empty',
+          'atCoder' : 'Empty',
+
         });
         if (context.mounted) Navigator.of(context).pop();
       } else {
