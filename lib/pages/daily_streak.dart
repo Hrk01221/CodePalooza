@@ -10,7 +10,7 @@ class DailyStreakScreen extends StatefulWidget {
 
 class _DailyStreakScreenState extends State<DailyStreakScreen> {
   SharedPreferences? _prefs;
-  List<bool> _solvedProblems = List.filled(7, false);
+  final List<bool> _solvedProblems = List.filled(7, false);
   int _currentStreak = 0;
 
   @override
@@ -51,7 +51,7 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
           lastDate.year == now.year) {
         // Already logged in today
         return;
-      } else if (lastDate.isBefore(now.subtract(Duration(days: 1)))) {
+      } else if (lastDate.isBefore(now.subtract(const Duration(days: 1)))) {
         // Missed a day, reset streak
         _currentStreak = 0;
         _prefs?.setInt('current_streak', _currentStreak);
@@ -80,7 +80,7 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
           height: 250,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Color(0xffe4f3ec),
+            color: const Color(0xffe4f3ec),
           ),
           child: Stack(
             children: [
@@ -89,19 +89,19 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                 children: [
                   Text(
                     '$_currentStreak Day Streak!',
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Color(0xff26b051),
                         fontFamily: 'Comfortaa',
                         fontSize: 24),
                   ),
-                  Text(
+                  const Text(
                     'Solve problems daily to maintain your streak.',
                     style: TextStyle(
                         color: Color(0xff26b051),
                         fontFamily: 'Comfortaa',
                         fontStyle: FontStyle.italic),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(7, (index) {
@@ -112,11 +112,11 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                           height: 50,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: Color(0xff59c88b),
+                              color: const Color(0xff59c88b),
                               width: 2.0,
                             ),
                             color: _solvedProblems[index]
-                                ? Color(0xff59c88b)
+                                ? const Color(0xff59c88b)
                                 : Colors.white,
                             shape: BoxShape.circle,
                           ),
@@ -126,7 +126,7 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                               Text(
                                 DateFormat('E').format(DateTime.now().subtract(
                                     Duration(days: 6 - index))),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 16,
                                     color: Color(0xff26b051),
                                     fontFamily: 'Comfortaa'
@@ -149,12 +149,12 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return BaseScreen();
+                          return const BaseScreen();
                         },
                       ),
                     );
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.close,
                     size: 20,
                     color: Color(0xff26b051),

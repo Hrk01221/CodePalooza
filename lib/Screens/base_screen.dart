@@ -27,11 +27,11 @@ class _BaseScreenState extends State<BaseScreen> {
 
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetoptions = <Widget>[
-    Profile(),
-    Profile(),
-    Schedule(),
-    Profile(),
+  static final List<Widget> _widgetoptions = <Widget>[
+    const Profile(),
+    const Profile(),
+    const Schedule(),
+    const Profile(),
   ];
   @override
   Widget build(BuildContext context) {
