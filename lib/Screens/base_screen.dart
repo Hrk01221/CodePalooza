@@ -36,6 +36,7 @@ class _BaseScreenState extends State<BaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Center(
         child: _widgetoptions.elementAt(_selectedIndex),
       ),
@@ -97,6 +98,9 @@ class _BaseScreenState extends State<BaseScreen> {
             currentIndex: _selectedIndex,
             onTap: (int index) {
               setState(() {
+                if(index==3){
+                  signUserOut();
+                }
                 _selectedIndex = index;
               });
             }),
