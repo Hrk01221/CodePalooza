@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:realpalooza/Theme/theme.dart';
+import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/firebase_options.dart';
 import 'package:realpalooza/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:realpalooza/pages/splash_screen.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context)=>ThemeProvider(),
+      child: const MyApp(),
+    )
+  );
 }
 //cc
 
@@ -21,7 +28,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
+      theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }
 }

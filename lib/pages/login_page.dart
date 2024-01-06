@@ -47,8 +47,8 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     //sign in
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    if (context.mounted) Navigator.of(context).pop();
+      await FirebaseAuth.instance.signInWithCredential(credential);
+    if(context.mounted)Navigator.of(context).pop();
   }
 
   void signInwithGithub() async{

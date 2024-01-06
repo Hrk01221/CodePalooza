@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/pages/daily_streak.dart';
 import '../pages/graph_code.dart';
@@ -42,33 +44,43 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xffe4f3ec),
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
-          backgroundColor: const Color(0xffbbefd8),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
-          title: const Text(
+          title: Text(
                 'Profile',
                 style: TextStyle(
                   fontFamily: 'Comfortaa',
                   fontSize: 25,
-                  color: Color(0xff085d34),
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             actions: [
               IconButton(
-                  onPressed: (){},
-                  icon: (
-                      const Icon(
-                        Icons.dark_mode_outlined,
-                      )
-                  )
+                onPressed: () {
+                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+                },
+                icon: Icon(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Icons.dark_mode
+                      : Icons.dark_mode_outlined,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ?Colors.white.withOpacity(.8)
+                      :Colors.grey[800],
+                ),
               ),
             ],
             leading: IconButton(
               onPressed: (){},
               icon: (
-                const Icon(
-                  Icons.chat_bubble_outline,
+                 Icon(
+                   Theme.of(context).brightness == Brightness.dark
+                       ? Icons.chat_bubble_outlined
+                       : Icons.chat_bubble_outline,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ?Colors.white.withOpacity(.8)
+                      :Colors.grey[800],
                 )
               ),
             ),
@@ -116,8 +128,8 @@ class _ProfileState extends State<Profile> {
                       Center(
                         child: Text(
                           userData['username'],
-                          style: const TextStyle(
-                            color: Color(0xff26b051),
+                          style:  TextStyle(
+                            color: Theme.of(context).colorScheme.secondary,
                             fontFamily: 'Comfortaa',
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -128,8 +140,8 @@ class _ProfileState extends State<Profile> {
                       Text(
                         currentUser.email!,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xff26b051),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
                           fontSize: 20,
                           fontFamily: 'Comfortaa',
                         ),
@@ -143,14 +155,14 @@ class _ProfileState extends State<Profile> {
                           padding: const EdgeInsets.all(15),
                           margin: const EdgeInsets.symmetric(horizontal: 120),
                           decoration: BoxDecoration(
-                            color: const Color(0xff26b051),
+                            color: Theme.of(context).brightness == Brightness.dark ?  Colors.white.withOpacity(.8) :  Color(0xff26b051),
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               'Edit profile',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Theme.of(context).brightness == Brightness.dark ? Colors.black : Colors.white,
                                 fontSize: 16,
                                 fontFamily: 'Comfortaa',
                               ),
@@ -161,9 +173,9 @@ class _ProfileState extends State<Profile> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Divider(
+                      Divider(
                         thickness: 0.5,
-                        color: Color(0xff26b051),
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       const SizedBox(
                         height: 20,
@@ -180,10 +192,10 @@ class _ProfileState extends State<Profile> {
                           const SizedBox(
                             width: 25,
                           ),
-                          const Text(
+                           Text(
                             'Performance Graph',
                             style: TextStyle(
-                                color: Colors.green,
+                                color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 20,
                                 fontFamily: 'Comfortaa'),
                           ),
@@ -203,7 +215,7 @@ class _ProfileState extends State<Profile> {
                               height: 30,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
-                                color: const Color(0xff26b051).withOpacity(.8),
+                                color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
                               ),
                               child: const Icon(
                                 LineAwesomeIcons.angle_right,
@@ -230,10 +242,10 @@ class _ProfileState extends State<Profile> {
                             width: 25,
                           ),
 
-                          const Text(
+                          Text(
                             'Daily Streak',
                              style: TextStyle(
-                             color: Colors.green,
+                             color: Theme.of(context).colorScheme.secondary,
                                  fontSize: 20,
                                  fontFamily: 'Comfortaa'),
                             ),
@@ -252,7 +264,7 @@ class _ProfileState extends State<Profile> {
                               height: 30,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
-                                color: const Color(0xff26b051).withOpacity(.8),
+                                color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
                               ),
                               child: const Icon(
                                 LineAwesomeIcons.angle_right,
@@ -279,10 +291,10 @@ class _ProfileState extends State<Profile> {
                             width: 25,
                           ),
 
-                          const Text(
+                           Text(
                             'Skills',
                             style: TextStyle(
-                                color: Colors.green,
+                                color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 20,
                                 fontFamily: 'Comfortaa'),
                           ),
@@ -301,7 +313,7 @@ class _ProfileState extends State<Profile> {
                               height: 30,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
-                                color: const Color(0xff26b051).withOpacity(.8),
+                                color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
                               ),
                               child: const Icon(
                                 LineAwesomeIcons.angle_right,
@@ -326,10 +338,10 @@ class _ProfileState extends State<Profile> {
                             width: 25,
                           ),
 
-                          const Text(
+                           Text(
                             'Log Out',
                             style: TextStyle(
-                                color: Colors.green,
+                                color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 20,
                                 fontFamily: 'Comfortaa'),
                           ),
@@ -343,7 +355,7 @@ class _ProfileState extends State<Profile> {
                               height: 30,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
-                                color: const Color(0xff26b051).withOpacity(.8),
+                                color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
                               ),
                               child: const Icon(
                                 Icons.logout,
