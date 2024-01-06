@@ -37,11 +37,11 @@ class _BaseScreenState extends State<BaseScreen> {
         ),
         child: Theme(
           data: Theme.of(context).copyWith(
-            canvasColor: const Color(0xffbbefd8),
+            canvasColor: Theme.of(context).colorScheme.primary,
           ),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.shifting,
-            selectedItemColor: const Color(0xff26b051),
+            selectedItemColor: Theme.of(context).colorScheme.secondary,
             selectedLabelStyle: const TextStyle(
                 color: Colors.black, fontFamily: 'Comfortaa'),
             items: [
