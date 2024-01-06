@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:realpalooza/Screens/edit_profile.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/pages/daily_streak.dart';
@@ -18,7 +19,8 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final currentUser = FirebaseAuth.instance.currentUser!;
-  void signUserOut() {
+  void signUserOut() async {
+    print('he');
     showDialog(
       context: context,
       builder: (context) {
@@ -39,6 +41,8 @@ class _ProfileState extends State<Profile> {
         print(e.code);
       }
     });
+    print(currentUser.email);
+
   }
 
   @override
@@ -102,9 +106,9 @@ class _ProfileState extends State<Profile> {
                 if (snapshot.data!.data() != null) {
                   userData = snapshot.data!.data() as Map<String, dynamic>;
                 } else {
-                  userData['username'] = 'Set ur Name';
+                  userData['username'] = 'Set Your Name';
+                  userData['dp'] = 'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg';
                 }
-                userData['dp'] = emptyProfile;
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -114,10 +118,9 @@ class _ProfileState extends State<Profile> {
                       Container(
                         width: 150,
                         height: 150,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: AssetImage(userData['dp']),
+                        child: ClipOval(
+                          child: Image.network(
+                            userData['dp']==''?'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg':userData['dp'],
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -127,7 +130,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       Center(
                         child: Text(
-                          userData['username'],
+                          userData['username']==''?'Set Your Name':userData['username'],
                           style:  TextStyle(
                             color: Theme.of(context).colorScheme.secondary,
                             fontFamily: 'Comfortaa',
@@ -150,7 +153,16 @@ class _ProfileState extends State<Profile> {
                         height: 30,
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return EditProfille();
+                              },
+                            ),
+                          );
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(15),
                           margin: const EdgeInsets.symmetric(horizontal: 120),

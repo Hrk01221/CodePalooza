@@ -13,3 +13,5 @@ const calender = 'lib/images/calendar.png';
 const emptyProfile = 'lib/images/emptyprofile.jpg';
 const think = 'lib/images/skill.png';
 const logout = 'lib/images/logout.png';
+const gallery = 'lib/images/gallery.png';
+const gallery2 = 'lib/images/gallery2.png';
