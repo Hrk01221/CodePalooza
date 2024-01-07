@@ -15,30 +15,15 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(30),
-        child:  AppBar(
-          backgroundColor: const Color(0xffe4f3ec),
-          actions: [IconButton(
-              onPressed: (){ Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const BaseScreen();
-                  },
-                ),
-              );},
-              icon: const Icon(Icons.arrow_circle_left_outlined))
-          ],
-        ),
-      ),
       backgroundColor: const Color(0xffe4f3ec),
       body: SingleChildScrollView(
+
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(height: 50,),
               ContestSection(
                 title: 'Recent Contest',
                 contests:[
@@ -193,7 +178,7 @@ class _ContestTileState extends State<ContestTile> {
               isReminderEnabled = value;
               // Handle reminder logic here
               if (isReminderEnabled) {
-                NotificationManager.showNotification();
+                _showPopupMessage(context);
                 // Add logic to set a reminder
               } else {
                 // Add logic to cancel the reminder
@@ -211,10 +196,58 @@ class _ContestTileState extends State<ContestTile> {
     String formattedDateTime = DateFormat('yyyyMMddTHHmm').format(item.date);
     String url = 'https://www.timeanddate.com/worldclock/fixedtime.html?iso=$formattedDateTime&p1=248';
 
-    if (await canLaunch(url)) {
-      await (url);
+    Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) { // Change canLaunch to canLaunchUrl
+      await launch(uri.toString());// Assuming you have a launch import statement in your code
     } else {
       throw 'Could not launch $url';
     }
+  }
+  // Function to show the popup message
+  void _showPopupMessage(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Reminder Set',
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xff075e34),
+                fontFamily: 'Comfortaa'
+            ),
+          ),
+          content: Text('An email will be sent to you 1 hour before the contest.',
+            style: const TextStyle(
+                //fontWeight: FontWeight.bold,
+                color: Color(0xff075e34),
+                fontFamily: 'Comfortaa'
+            ),
+          ),
+          actions: [
+            Container(
+              width: 50.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+              shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: TextButton(
+                onPressed: () {
+                  // Close the dialog when the button is pressed
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK',
+                  style: const TextStyle(
+                      color: Color(0xff075e34),
+                      fontFamily: 'Comfortaa'
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
