@@ -82,10 +82,11 @@ class _EditProfilleState extends State<EditProfille> {
           .doc(currentUser.email)
           .set({
         'dp' : imageUrl,
-        'username' : UserNameController.text,
+        'username' : UserNameController.text==''?currentUser.email?.split('@')[0]:UserNameController.text,
         'codeForces': Cf.text,
         'codeChef' : Cc.text,
         'atCoder' : Atc.text,
+        'Email' : currentUser.email,
 
       });
     } catch(error){
@@ -328,7 +329,7 @@ class _EditProfilleState extends State<EditProfille> {
                 if (snapshot.data!.data() != null) {
                   userData = snapshot.data!.data() as Map<String, dynamic>;
                 } else {
-                  userData['username'] = 'Set Your Name';
+                  userData['username'] = currentUser.email?.split('@')[0];
                   userData['dp'] =
                   'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg';
                 }

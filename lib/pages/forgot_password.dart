@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:realpalooza/pages/auth_page.dart';
+import 'package:realpalooza/Services/auth_page.dart';
 
 import '../components/my_text_field.dart';
 

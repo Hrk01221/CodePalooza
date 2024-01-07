@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:realpalooza/Screens/chatPage.dart';
 import 'package:realpalooza/Screens/edit_profile.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/constant/icons.dart';
@@ -34,7 +35,7 @@ class _ProfileState extends State<Profile> {
       try {
         GoogleSignIn().signOut();
         FirebaseAuth.instance.signOut();
-        Navigator.pop(context);
+        //Navigator.pop(context);
         if (context.mounted) Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (context.mounted) Navigator.of(context).pop();
@@ -74,7 +75,16 @@ class _ProfileState extends State<Profile> {
               ),
             ],
             leading: IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ChatPage();
+                    },
+                  ),
+                );
+              },
               icon: (
                  Icon(
                    Theme.of(context).brightness == Brightness.dark

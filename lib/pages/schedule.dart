@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:realpalooza/pages/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:realpalooza/Screens/base_screen.dart';
-
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
-
   @override
   State<Schedule> createState() => _ScheduleState();
 }
@@ -15,7 +11,7 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffe4f3ec),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
 
         child: Padding(
@@ -86,10 +82,10 @@ class ContestSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style:  TextStyle(
               fontSize: 23,
               //fontWeight: FontWeight.bold,
-              color: Color(0xff075e34),
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.8) : Color(0xff26b051),
               fontFamily: 'Comfortaa'
           ),
         ),

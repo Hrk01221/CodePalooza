@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:realpalooza/pages/auth_page.dart';
+import 'package:realpalooza/Services/auth_page.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
