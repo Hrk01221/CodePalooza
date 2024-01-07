@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:realpalooza/pages/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:realpalooza/Screens/base_screen.dart';
 
@@ -192,6 +193,7 @@ class _ContestTileState extends State<ContestTile> {
               isReminderEnabled = value;
               // Handle reminder logic here
               if (isReminderEnabled) {
+                NotificationManager.showNotification();
                 // Add logic to set a reminder
               } else {
                 // Add logic to cancel the reminder
