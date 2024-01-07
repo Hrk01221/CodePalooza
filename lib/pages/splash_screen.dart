@@ -62,7 +62,7 @@ class SplashScreen extends StatelessWidget {
 
         ),
       ),
-      nextScreen:  const Authpage(),
+      nextScreen:  Authpage(),
       splashIconSize: double.infinity,
       duration: 700,
       splashTransition: SplashTransition.sizeTransition,

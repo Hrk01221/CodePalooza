@@ -3,11 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/firebase_options.dart';
+import 'package:realpalooza/pages/notification.dart';
 import 'package:realpalooza/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationManager.initializeNotifications();
+  NotificationManager.setNotificationListeners();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
