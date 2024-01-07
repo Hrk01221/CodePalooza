@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:realpalooza/Screens/base_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -75,13 +74,6 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(
-          width: 400,
-          height: 250,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: const Color(0xffe4f3ec),
-          ),
           child: Stack(
             children: [
               Column(
@@ -140,31 +132,9 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
                   ),
                 ],
               ),
-              Positioned(
-                top: 5,
-                right: 6,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const BaseScreen();
-                        },
-                      ),
-                    );
-                  },
-                  child: const Icon(
-                    Icons.close,
-                    size: 20,
-                    color: Color(0xff26b051),
-                  ),
-                ),
-              ),
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
