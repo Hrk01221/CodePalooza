@@ -19,8 +19,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final currentUser = FirebaseAuth.instance.currentUser!;
-  void signUserOut() async {
-    print('he');
+  Future signUserOut() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -35,14 +34,13 @@ class _ProfileState extends State<Profile> {
       try {
         GoogleSignIn().signOut();
         FirebaseAuth.instance.signOut();
+        Navigator.pop(context);
         if (context.mounted) Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (context.mounted) Navigator.of(context).pop();
         print(e.code);
       }
     });
-    print(currentUser.email);
-
   }
 
   @override
@@ -154,7 +152,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {

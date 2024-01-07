@@ -51,14 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const Authpage();
-                        },
-                      ),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {return const Authpage();},),);
                   },
                   child: BounceInUp(
                     child: const Text(
