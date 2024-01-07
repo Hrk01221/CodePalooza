@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class Graph extends StatelessWidget {
+  const Graph({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color(0xffe4f3ec),
+        backgroundColor: const Color(0xffe4f3ec),
         appBar: AppBar(
-          backgroundColor: Color(0xffe4f3ec),
-          title: Text('Performance Chart',
+          backgroundColor: const Color(0xffe4f3ec),
+          title: const Text('Performance Chart',
           style: TextStyle(
             color: Color(0xff26b051),
               fontSize: 25,

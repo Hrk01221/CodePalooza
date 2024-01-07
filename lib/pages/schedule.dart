@@ -5,6 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:realpalooza/Screens/base_screen.dart';
 
 class Schedule extends StatefulWidget {
+  const Schedule({super.key});
+
   @override
   State<Schedule> createState() => _ScheduleState();
 }
@@ -14,19 +16,19 @@ class _ScheduleState extends State<Schedule> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(30),
+        preferredSize: const Size.fromHeight(30),
         child:  AppBar(
-          backgroundColor: Color(0xffe4f3ec),
+          backgroundColor: const Color(0xffe4f3ec),
           actions: [IconButton(
               onPressed: (){ Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return BaseScreen();
+                    return const BaseScreen();
                   },
                 ),
               );},
-              icon: Icon(Icons.arrow_circle_left_outlined))
+              icon: const Icon(Icons.arrow_circle_left_outlined))
           ],
         ),
       ),
@@ -90,7 +92,7 @@ class ContestSection extends StatelessWidget {
   final String title;
   final List<ContestItem> contests;
 
-  const ContestSection({required this.title, required this.contests});
+  const ContestSection({super.key, required this.title, required this.contests});
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +130,7 @@ class ContestItem {
 class ContestTile extends StatefulWidget {
   final ContestItem item;
 
-  const ContestTile({required this.item});
+  const ContestTile({super.key, required this.item});
 
   @override
   _ContestTileState createState() => _ContestTileState();
@@ -153,7 +155,7 @@ class _ContestTileState extends State<ContestTile> {
     String formattedDate = DateFormat('dd/MM/yy (E) HH:mm').format(widget.item.date);
 
     return ListTile(
-      leading: Icon(
+      leading: const Icon(
         Icons.code_rounded,
         color: Color(0xff099141),
         size: 30.0,
@@ -198,8 +200,8 @@ class _ContestTileState extends State<ContestTile> {
               }
             });
           },
-          activeColor: Color(0xff099141),
-          inactiveTrackColor: Color(0xffe8f5e9),
+          activeColor: const Color(0xff099141),
+          inactiveTrackColor: const Color(0xffe8f5e9),
         ),
       ),
     );
@@ -210,7 +212,7 @@ class _ContestTileState extends State<ContestTile> {
     String url = 'https://www.timeanddate.com/worldclock/fixedtime.html?iso=$formattedDateTime&p1=248';
 
     if (await canLaunch(url)) {
-      await launch(url);
+      await (url);
     } else {
       throw 'Could not launch $url';
     }

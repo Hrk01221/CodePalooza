@@ -1,16 +1,16 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:realpalooza/components/my_button.dart';
 import 'package:realpalooza/components/my_text_field.dart';
 import 'package:realpalooza/components/square_tile.dart';
-
+import 'package:realpalooza/constant/icons.dart';
 class RegisterPage extends StatefulWidget {
   final Function()? ontap;
 
-  RegisterPage({Key? key, required this.ontap}) : super(key: key);
+  const RegisterPage({Key? key, required this.ontap}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -45,17 +45,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     //sign in
-    try{
-      await FirebaseAuth.instance.signInWithCredential(credential);
-    }on FirebaseAuthException catch(e){
-
-    } finally {
-      Navigator.of(context).pop();
-    }
-
-    if(Navigator.of(context).canPop()){
-      Navigator.of(context).pop();
-    }
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    if (context.mounted) Navigator.of(context).pop();
   }
 
   void signInwithGithub() async{
@@ -73,12 +64,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
     try{
       await FirebaseAuth.instance.signInWithProvider(githubAuthProvider);
+      if (context.mounted) Navigator.of(context).pop();
     }on FirebaseAuthException catch (e){
-    } finally {
-      Navigator.of(context).pop();
-    }
-    if(Navigator.of(context).canPop()){
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
+      errorShowMessage(context,e.code);
     }
   }
 
@@ -88,31 +77,39 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(color: Color(0xff26b051)),
+          child: CircularProgressIndicator(color: Color(0xff26b051),),
         );
       },
     );
-
     try {
-      if (passwordcontroller.text == confirmpasswordcontroller.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        if (passwordcontroller.text == confirmpasswordcontroller.text) {
+        UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailcontroller.text,
           password: passwordcontroller.text,
         );
-      } else {
-        Navigator.pop(context);
-        ErrorShowMessage(context, 'Password Don\'t Match');
-        return;
-      }
+        FirebaseFirestore.instance
+        .collection("Users")
+        .doc(userCredential.user!.email)
+        .set({
+          'dp' : emptyProfile,
+          'username' : emailcontroller.text.split('@')[0],
+          'codeForces': 'Empty',
+          'codeChef' : 'Empty',
+          'atCoder' : 'Empty',
 
-      Navigator.pop(context);
+        });
+        if (context.mounted) Navigator.of(context).pop();
+      } else {
+          if (context.mounted) Navigator.of(context).pop();
+          errorShowMessage(context, 'Password Don\'t Match');
+      }
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      ErrorShowMessage(context, e.code);
+      if (context.mounted) Navigator.of(context).pop();
+      errorShowMessage(context, e.code);
     }
   }
 
-  void ErrorShowMessage(BuildContext context, String text) {
+  void errorShowMessage(BuildContext context, String text) {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -127,18 +124,19 @@ class _RegisterPageState extends State<RegisterPage> {
           child: FadeTransition(
             opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
             child: Dialog(
-              backgroundColor: Color(0xffe4f3ec),
-              shape: RoundedRectangleBorder(
+              backgroundColor: const Color(0xffe4f3ec),
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
-              child: Container(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
                 height: 80,
                 child: Padding(
-                  padding: const EdgeInsets.all(32.0),
+                  padding: const EdgeInsets.all(25.0),
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xff26b051),
                       fontSize: 16,
                       fontFamily: 'Comfortaa',
@@ -146,7 +144,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               ),
-              alignment: Alignment.bottomCenter,
             ),
           ),
         );
@@ -157,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffe4f3ec),
+      backgroundColor: const Color(0xffe4f3ec),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -167,7 +164,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 10),
                 Center(
                   child: BounceInDown(
-                    child: Container(
+                    child: SizedBox(
                       width: 150,
                       height: 100,
                       child: Image.asset('lib/images/CPlogo.png'),
@@ -175,7 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 const SizedBox(height: 10,),
-                Text(
+                const Text(
                   'Let\'s Create an account for ya!',
                   style: TextStyle(
                       color: Color(0xff26b051),
@@ -218,7 +215,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25,),
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Divider(
                         thickness: 0.5,
                         color: Color(0xffe4f3ec),
@@ -231,7 +228,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           fontFamily: 'Comfortaa'
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                       child: Divider(
                         thickness: 0.5,
                         color: Color(0xffe4f3ec),
@@ -270,7 +267,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(width: 4,),
                     GestureDetector(
                       onTap: widget.ontap,
-                      child: Text(
+                      child: const Text(
                         'Login now',
                         style: TextStyle(
                           color: Colors.blue,
