@@ -29,13 +29,12 @@ class _ProfileState extends State<Profile> {
         );
       },
     );
-
     // Introduce a small delay before entering the try block
     Future.delayed(const Duration(milliseconds: 1000), () async {
       try {
         GoogleSignIn().signOut();
         FirebaseAuth.instance.signOut();
-        //Navigator.pop(context);
+        Navigator.pop(context);
         if (context.mounted) Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (context.mounted) Navigator.of(context).pop();
@@ -76,6 +75,7 @@ class _ProfileState extends State<Profile> {
             ],
             leading: IconButton(
               onPressed: (){
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(

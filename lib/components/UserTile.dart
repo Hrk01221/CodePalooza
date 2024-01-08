@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class UserTile extends StatelessWidget {
   final String text;
   final void Function()? ontap;
@@ -17,9 +18,7 @@ class UserTile extends StatelessWidget {
     return SingleChildScrollView(
       child: SafeArea(
         child: GestureDetector(
-          onTap: (){
-              print('heo');
-          },
+          onTap:ontap,
           child: Container(
             height: 70,
             width: 50,
