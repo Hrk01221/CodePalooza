@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:realpalooza/Screens/Chatting_with.dart';
 import 'package:realpalooza/Screens/base_screen.dart';
 import 'package:realpalooza/Services/chat/chat_service.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
-
 import '../components/UserTile.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
-
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
@@ -18,6 +17,8 @@ class _ChatPageState extends State<ChatPage> {
   final ChatService _chatService = ChatService();
   final currentUser = FirebaseAuth.instance.currentUser!;
   TextEditingController _searchController = TextEditingController();
+  String name = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,6 +84,7 @@ class _ChatPageState extends State<ChatPage> {
       body: SafeArea(
         child: Column(
           children: [
+            const SizedBox(height: 20,),
             _buildSearchBox(),
             Expanded(
               child: _buildUserList(),
@@ -94,18 +96,34 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
   Widget _buildSearchBox() {
+      //initState();
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
         controller: _searchController,
-        onChanged: (value) {
-          // Handle search logic here, e.g., update a filtered user list
+        onChanged: (value){
+          setState(() {
+            name = value;
+          });
         },
         decoration: InputDecoration(
+            enabledBorder:  OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+            ),
           labelText: 'Search Users',
-          labelStyle: TextStyle(color: Colors.grey[800]),
+          labelStyle: TextStyle(color: Theme.of(context).brightness == Brightness.dark ?  Colors.white.withOpacity(.8) :  Color(0xff26b051),fontFamily: 'Comfortaa'),
           prefixIcon: Icon(Icons.search),
+          suffixIcon: IconButton(
+            onPressed: (){_searchController.clear();setState(() {
+              name='';
+            });},
+            icon: Icon(IconData(0xe16a, fontFamily: 'MaterialIcons')),
+          )
         ),
+
       ),
     );
   }
@@ -126,12 +144,24 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+
   Widget _buildUserListItem(Map<String,dynamic>userData,BuildContext context){
-    if(userData["email"] != currentUser.email){
-      print(userData["email"]);
+    if(userData["Email"] != currentUser.email && (name.isEmpty || userData['username'].toString().toLowerCase().startsWith(name.toLowerCase()))){
+      print(name);
       return UserTile(
         text: userData['username'],
-        ontap: (){},
+        ontap: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChattingPage(
+                    recievername: userData['username'],
+                    recieverID: userData["Email"],
+                    recieverdp: userData["dp"],
+                ),
+              )
+          );
+        },
         imagePath: userData['dp']==''?'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg':userData['dp'],
       );
     }else{

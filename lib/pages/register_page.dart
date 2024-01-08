@@ -25,27 +25,45 @@ class _RegisterPageState extends State<RegisterPage> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(color: Color(0xff26b051),),
+          child: CircularProgressIndicator(color: Color(0xff26b051)),
         );
       },
     );
-    //begin sign in
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    // obtain details
+    try {
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+      if (gUser == null) {
+        // User canceled the sign-in
+        if (context.mounted) Navigator.of(context).pop();
+        return;
+      }
 
-    //create new credential
+      // Obtain details
+      final String googleEmail = gUser.email; // Get the Google email
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth .idToken,
-    );
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-    //sign in
-    await FirebaseAuth.instance.signInWithCredential(credential);
-    if (context.mounted) Navigator.of(context).pop();
+      // Create new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      FirebaseFirestore.instance.collection("Users").doc(googleEmail).set({
+        'dp': 'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg',
+        'username': googleEmail.split('@')[0],
+        'codeForces': 'Empty',
+        'codeChef': 'Empty',
+        'atCoder': 'Empty',
+        'Email': googleEmail,
+      });
+
+      if (context.mounted) Navigator.of(context).pop();
+    } catch (error) {
+      print(error);
+    }
   }
 
   void signInwithGithub() async{
