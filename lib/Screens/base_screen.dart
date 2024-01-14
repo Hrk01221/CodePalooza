@@ -5,6 +5,8 @@ import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
 import 'package:realpalooza/pages/schedule.dart';
 
+import 'learning.dart';
+
 class BaseScreen extends StatefulWidget {
   const BaseScreen({super.key});
   @override
@@ -20,7 +22,7 @@ class _BaseScreenState extends State<BaseScreen> {
 
   static final List<Widget> _widgetoptions = <Widget>[
     const Profile(),
-    const Profile(),
+    LearnProgrammingPage(),
     const Schedule(),
     const Profile(),
   ];
