@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,19 +7,22 @@ import 'package:realpalooza/components/my_button.dart';
 import 'package:realpalooza/components/my_text_field.dart';
 import 'package:realpalooza/components/square_tile.dart';
 import 'package:realpalooza/pages/forgot_password.dart';
+
 class LoginPage extends StatefulWidget {
   final Function()? ontap;
 
-  LoginPage({Key? key, required this.ontap});
+  const LoginPage({super.key, required this.ontap});//here there was changed called Key? key
 
   @override
   State<LoginPage> createState() => _LoginPageState();
+
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailcontroller = TextEditingController();
-  final passwordcontroller = TextEditingController();
 
+  final emailcontroller = TextEditingController();
+
+  final passwordcontroller = TextEditingController();
   void signInWithGoogle() async {
     showDialog(
       context: context,
@@ -28,29 +32,43 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
-    //begin sign in
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    // obtain details
+    try {
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+      if (gUser == null) {
+        // User canceled the sign-in
+        if (context.mounted) Navigator.of(context).pop();
+        return;
+      }
 
-    //create new credential
+      // Obtain details
+      final String googleEmail = gUser.email; // Get the Google email
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth .idToken,
-    );
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-    //sign in
-    try{
+      // Create new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
       await FirebaseAuth.instance.signInWithCredential(credential);
-    }on FirebaseAuthException catch(e){
+      FirebaseFirestore.instance.collection("Users").doc(googleEmail).set({
+        'dp': 'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg',
+        'username': googleEmail.split('@')[0],
+        'codeForces': 'Empty',
+        'codeChef': 'Empty',
+        'atCoder': 'Empty',
+        'Email': googleEmail,
+      });
 
-    } finally {
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
+    } catch (error) {
+      print(error);
     }
   }
+
 
   void signInwithGithub() async{
     showDialog(
@@ -64,13 +82,10 @@ class _LoginPageState extends State<LoginPage> {
     GithubAuthProvider githubAuthProvider = GithubAuthProvider();
     try{
       await FirebaseAuth.instance.signInWithProvider(githubAuthProvider);
+      if (context.mounted) Navigator.of(context).pop();
     }on FirebaseAuthException catch (e){
-      ErrorShowMessage(context, e.code);
-    } finally {
-      Navigator.of(context).pop();
-    }
-    if(Navigator.of(context).canPop()){
-      Navigator.of(context).pop();
+      if (context.mounted) Navigator.of(context).pop();
+      errorShowMessage(context, e.code);
     }
   }
 
@@ -80,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(color: Color(0xff26b051)),
         );
       },
     );
@@ -90,14 +105,14 @@ class _LoginPageState extends State<LoginPage> {
         email: emailcontroller.text,
         password: passwordcontroller.text,
       );
-      Navigator.pop(context);
+      if (context.mounted) Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
-      Navigator.pop(context);
-      ErrorShowMessage(context, e.code);
+      if (context.mounted) Navigator.of(context).pop();
+      errorShowMessage(context, e.code);
     }
   }
 
-  void ErrorShowMessage(BuildContext context, String text) {
+  void errorShowMessage(BuildContext context, String text) {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -112,18 +127,19 @@ class _LoginPageState extends State<LoginPage> {
           child: FadeTransition(
             opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
             child: Dialog(
-              backgroundColor: Color(0xffe4f3ec),
-              shape: RoundedRectangleBorder(
+              backgroundColor: const Color(0xffe4f3ec),
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
-              child: Container(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
                 height: 80,
                 child: Padding(
-                  padding: const EdgeInsets.all(32.0),
+                  padding: const EdgeInsets.all(25.0),
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xff26b051),
                       fontSize: 16,
                       fontFamily: 'Comfortaa',
@@ -131,7 +147,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              alignment: Alignment.bottomCenter,
             ),
           ),
         );
@@ -142,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffe4f3ec),
+      backgroundColor: const Color(0xffe4f3ec),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -152,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 Center(
                   child: BounceInDown(
-                    child: Container(
+                    child: SizedBox(
                       width: 200,
                       height: 150,
                       child: Image.asset('lib/images/CPlogo.png'),
@@ -161,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 5,),
                 BounceInLeft(
-                  child: Text(
+                  child: const Text(
                     'Welcome Back you\'ve been missed!',
                     style: TextStyle(
                         color: Color(0xff26b051),
@@ -198,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ForgotPasswordPage(),
+                                  builder: (context) => const ForgotPasswordPage(),
                                 )
                             );
                           },
@@ -225,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                 SlideInUp(
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
                           color: Color(0xffe4f3ec),
@@ -238,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontFamily: 'Comfortaa'
                         ),
                       ),
-                      Expanded(
+                      const Expanded(
                         child: Divider(
                           thickness: 0.5,
                           color: Color(0xffe4f3ec),
@@ -279,7 +294,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(width: 4,),
                       GestureDetector(
                         onTap: widget.ontap,
-                        child: Text(
+                        child: const Text(
                           'Register now',
                           style: TextStyle(
                             color: Colors.blue,

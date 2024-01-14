@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:realpalooza/pages/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:realpalooza/Screens/base_screen.dart';
-
 class Schedule extends StatefulWidget {
+  const Schedule({super.key});
   @override
   State<Schedule> createState() => _ScheduleState();
 }
@@ -13,30 +11,15 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(30),
-        child:  AppBar(
-          backgroundColor: Color(0xffe4f3ec),
-          actions: [IconButton(
-              onPressed: (){ Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BaseScreen();
-                  },
-                ),
-              );},
-              icon: Icon(Icons.arrow_circle_left_outlined))
-          ],
-        ),
-      ),
-      backgroundColor: const Color(0xffe4f3ec),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SingleChildScrollView(
+
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(height: 50,),
               ContestSection(
                 title: 'Recent Contest',
                 contests:[
@@ -90,7 +73,7 @@ class ContestSection extends StatelessWidget {
   final String title;
   final List<ContestItem> contests;
 
-  const ContestSection({required this.title, required this.contests});
+  const ContestSection({super.key, required this.title, required this.contests});
 
   @override
   Widget build(BuildContext context) {
@@ -99,10 +82,10 @@ class ContestSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style:  TextStyle(
               fontSize: 23,
               //fontWeight: FontWeight.bold,
-              color: Color(0xff075e34),
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.8) : Color(0xff26b051),
               fontFamily: 'Comfortaa'
           ),
         ),
@@ -128,7 +111,7 @@ class ContestItem {
 class ContestTile extends StatefulWidget {
   final ContestItem item;
 
-  const ContestTile({required this.item});
+  const ContestTile({super.key, required this.item});
 
   @override
   _ContestTileState createState() => _ContestTileState();
@@ -153,7 +136,7 @@ class _ContestTileState extends State<ContestTile> {
     String formattedDate = DateFormat('dd/MM/yy (E) HH:mm').format(widget.item.date);
 
     return ListTile(
-      leading: Icon(
+      leading: const Icon(
         Icons.code_rounded,
         color: Color(0xff099141),
         size: 30.0,
@@ -191,15 +174,15 @@ class _ContestTileState extends State<ContestTile> {
               isReminderEnabled = value;
               // Handle reminder logic here
               if (isReminderEnabled) {
-                NotificationManager.showNotification();
+                _showPopupMessage(context);
                 // Add logic to set a reminder
               } else {
                 // Add logic to cancel the reminder
               }
             });
           },
-          activeColor: Color(0xff099141),
-          inactiveTrackColor: Color(0xffe8f5e9),
+          activeColor: const Color(0xff099141),
+          inactiveTrackColor: const Color(0xffe8f5e9),
         ),
       ),
     );
@@ -209,10 +192,58 @@ class _ContestTileState extends State<ContestTile> {
     String formattedDateTime = DateFormat('yyyyMMddTHHmm').format(item.date);
     String url = 'https://www.timeanddate.com/worldclock/fixedtime.html?iso=$formattedDateTime&p1=248';
 
-    if (await canLaunch(url)) {
-      await launch(url);
+    Uri uri = Uri.parse(url);
+
+    if (await canLaunchUrl(uri)) { // Change canLaunch to canLaunchUrl
+      await launch(uri.toString());// Assuming you have a launch import statement in your code
     } else {
       throw 'Could not launch $url';
     }
+  }
+  // Function to show the popup message
+  void _showPopupMessage(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Reminder Set',
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xff075e34),
+                fontFamily: 'Comfortaa'
+            ),
+          ),
+          content: Text('An email will be sent to you 1 hour before the contest.',
+            style: const TextStyle(
+                //fontWeight: FontWeight.bold,
+                color: Color(0xff075e34),
+                fontFamily: 'Comfortaa'
+            ),
+          ),
+          actions: [
+            Container(
+              width: 50.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+              shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+              child: TextButton(
+                onPressed: () {
+                  // Close the dialog when the button is pressed
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK',
+                  style: const TextStyle(
+                      color: Color(0xff075e34),
+                      fontFamily: 'Comfortaa'
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

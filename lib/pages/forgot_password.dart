@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:realpalooza/pages/auth_page.dart';
+import 'package:realpalooza/Services/auth_page.dart';
 
 import '../components/my_text_field.dart';
 
@@ -16,6 +16,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   final _emailcontroller = TextEditingController();
 
+  @override
   void dispose(){
     _emailcontroller.dispose();
     super.dispose();
@@ -27,15 +28,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: Color(0xffe4f3ec),
+              backgroundColor: const Color(0xffe4f3ec),
               title: BounceInDown(
-                child: Text(
+                child: const Text(
                     'Reset Password',
                      style: TextStyle(color: Color(0xff26b051),fontSize: 16,fontFamily: 'Comfortaa'),
                 ),
               ),
               content: BounceInLeft(
-                child: Text(
+                child: const Text(
                     'A Link Has been sent to your mail',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -50,17 +51,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return Authpage();
-                        },
-                      ),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {return const Authpage();},),);
                   },
                   child: BounceInUp(
-                    child: Text(
+                    child: const Text(
                       'Go Back',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -74,13 +68,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               ],
             );},);
     }on FirebaseAuthException catch (e) {
-      ErrorShowMessage(context, e.code);
+      errorShowMessage(context, e.code);
     }
 
   }
 
 
-  void ErrorShowMessage(BuildContext context, String text) {
+  void errorShowMessage(BuildContext context, String text) {
     showGeneralDialog(
       context: context,
       barrierDismissible: true,
@@ -95,18 +89,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           child: FadeTransition(
             opacity: Tween<double>(begin: 0.5, end: 1.0).animate(a1),
             child: Dialog(
-              backgroundColor: Color(0xffe4f3ec),
-              shape: RoundedRectangleBorder(
+              backgroundColor: const Color(0xffe4f3ec),
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
               ),
-              child: Container(
+              alignment: Alignment.bottomCenter,
+              child: SizedBox(
                 height: 80,
                 child: Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: Text(
                     text,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xff26b051),
                       fontSize: 16,
                       fontFamily: 'Comfortaa',
@@ -114,7 +109,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
               ),
-              alignment: Alignment.bottomCenter,
             ),
           ),
         );
@@ -124,7 +118,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffe4f3ec),
+      backgroundColor: const Color(0xffe4f3ec),
       body: SafeArea(
       child: Center(
       child: SingleChildScrollView(
@@ -133,7 +127,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       children: [
         Center(
             child: BounceInDown(
-                child: Container(
+                child: SizedBox(
                   width: 200,
                   height: 150,
                   child: Image.asset('lib/images/CPlogo.png'),
@@ -142,7 +136,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         const SizedBox(height: 10,),
         BounceInRight(
-          child: Text(
+          child: const Text(
               'Don\'t Worry We\'ll get you going soon',
               style: TextStyle(
                   color: Color(0xff26b051),
@@ -167,12 +161,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             onTap: passwordReset,
             child: Center(
               child: Container(
-                padding: EdgeInsets.all(20),
-                margin: EdgeInsets.symmetric(horizontal: 80), // Adjusted margin for a larger button
+                padding: const EdgeInsets.all(20),
+                margin: const EdgeInsets.symmetric(horizontal: 80), // Adjusted margin for a larger button
                 decoration: BoxDecoration(
-                  color: Color(0xff26b051),
+                  color: const Color(0xff26b051),
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color(0xff26b051),
                       spreadRadius: 1,
@@ -187,10 +181,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     )
                   ],
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Reset Password',
-                    style: const TextStyle(
+                    style:  TextStyle(
                       color: Colors.white,
                       fontSize: 18,
                       fontFamily: 'Comfortaa',
@@ -207,7 +201,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           onTap: (){
             Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context){
-              return Authpage();
+              return const Authpage();
             })
             );
           },

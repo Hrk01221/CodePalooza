@@ -1,5 +1,4 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/material.dart';
 import 'package:realpalooza/pages/notification_controller.dart';
 class NotificationManager {
   static Future<void> initializeNotifications() async {
