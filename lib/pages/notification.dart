@@ -1,8 +1,10 @@
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:realpalooza/pages/notification_controller.dart';
 class NotificationManager {
   static Future<void> initializeNotifications() async {
-    await AwesomeNotifications().initialize(null, [
+    await AwesomeNotifications().initialize(
+        null, [
       NotificationChannel(
         channelGroupKey: "basic_channel_group",
         channelKey: "basic_channel",
