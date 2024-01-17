@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   final emailcontroller = TextEditingController();
 
   final passwordcontroller = TextEditingController();
-
   void signInWithGoogle() async {
     showDialog(
       context: context,
@@ -32,24 +32,43 @@ class _LoginPageState extends State<LoginPage> {
         );
       },
     );
-    //begin sign in
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    // obtain details
+    try {
+      final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
-    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+      if (gUser == null) {
+        // User canceled the sign-in
+        if (context.mounted) Navigator.of(context).pop();
+        return;
+      }
 
-    //create new credential
+      // Obtain details
+      final String googleEmail = gUser.email; // Get the Google email
 
-    final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
-      idToken: gAuth .idToken,
-    );
+      final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-    //sign in
+      // Create new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
+        idToken: gAuth.idToken,
+      );
+
       await FirebaseAuth.instance.signInWithCredential(credential);
-    if(context.mounted)Navigator.of(context).pop();
+      FirebaseFirestore.instance.collection("Users").doc(googleEmail).set({
+        'dp': 'https://i.postimg.cc/CL3mxvsB/emptyprofile.jpg',
+        'username': googleEmail.split('@')[0],
+        'codeForces': 'Empty',
+        'codeChef': 'Empty',
+        'atCoder': 'Empty',
+        'Email': googleEmail,
+      });
+
+      if (context.mounted) Navigator.of(context).pop();
+    } catch (error) {
+      print(error);
+    }
   }
+
 
   void signInwithGithub() async{
     showDialog(

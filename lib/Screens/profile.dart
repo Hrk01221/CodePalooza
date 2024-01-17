@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:realpalooza/Screens/chatPage.dart';
 import 'package:realpalooza/Screens/edit_profile.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/constant/icons.dart';
@@ -19,8 +20,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final currentUser = FirebaseAuth.instance.currentUser!;
-  void signUserOut() async {
-    print('he');
+  Future signUserOut() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -29,20 +29,18 @@ class _ProfileState extends State<Profile> {
         );
       },
     );
-
     // Introduce a small delay before entering the try block
     Future.delayed(const Duration(milliseconds: 1000), () async {
       try {
         GoogleSignIn().signOut();
         FirebaseAuth.instance.signOut();
+        Navigator.pop(context);
         if (context.mounted) Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (context.mounted) Navigator.of(context).pop();
         print(e.code);
       }
     });
-    print(currentUser.email);
-
   }
 
   @override
@@ -76,7 +74,17 @@ class _ProfileState extends State<Profile> {
               ),
             ],
             leading: IconButton(
-              onPressed: (){},
+              onPressed: (){
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return ChatPage();
+                    },
+                  ),
+                );
+              },
               icon: (
                  Icon(
                    Theme.of(context).brightness == Brightness.dark
@@ -154,7 +162,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {

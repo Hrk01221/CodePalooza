@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:realpalooza/pages/auth_page.dart';
+import 'package:realpalooza/Services/auth_page.dart';
 
 import '../components/my_text_field.dart';
 
@@ -51,14 +51,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const Authpage();
-                        },
-                      ),
-                    );
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {return const Authpage();},),);
                   },
                   child: BounceInUp(
                     child: const Text(

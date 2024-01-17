@@ -3,12 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/pages/notification.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:realpalooza/Screens/base_screen.dart';
 
+
+import 'package:url_launcher/url_launcher.dart';
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
-
   @override
   State<Schedule> createState() => _ScheduleState();
 }
@@ -18,6 +17,7 @@ class _ScheduleState extends State<Schedule> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
@@ -69,6 +69,7 @@ class _ScheduleState extends State<Schedule> {
             ),
           )
       ),
+
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -137,10 +138,19 @@ class ContestSection extends StatelessWidget {
       children: [
         Text(
           title,
+
         style: TextStyle(
           color: Theme.of(context).colorScheme.secondary,
           fontSize: 25,
           fontFamily: 'Comfortaa'),
+
+          style:  TextStyle(
+              fontSize: 23,
+              //fontWeight: FontWeight.bold,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.8) : Color(0xff26b051),
+              fontFamily: 'Comfortaa'
+          ),
+
         ),
         const SizedBox(height: 10),
         for (var contest in contests) ContestTile(item: contest),
