@@ -34,7 +34,7 @@ class _ProfileState extends State<Profile> {
       try {
         GoogleSignIn().signOut();
         FirebaseAuth.instance.signOut();
-        Navigator.pop(context);
+        Navigator.of(context).pop();
         if (context.mounted) Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (context.mounted) Navigator.of(context).pop();
