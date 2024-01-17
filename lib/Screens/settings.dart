@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +76,21 @@ class Settings extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                NotificationManager.showNotification();
+                NotificationManager.showNotification(
+                    title: 'Hello world',
+                    body: 'this is my notification',
+                    payload: {
+                      "navigate":"true",
+                    },
+                actionButtons: [
+                  NotificationActionButton(
+                      key: 'check',
+                      label: 'check it out',
+                  actionType: ActionType.SilentAction,
+                  color: Colors.green,
+                  )
+                ]);
+                NotificationManager.setNotificationListeners();
               },
               child: Text('Send Notifications',style: TextStyle(color: Color(0xff26b051)),
               ),
