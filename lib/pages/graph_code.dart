@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../Screens/base_screen.dart';
 
 class Graph extends StatelessWidget {
   const Graph({super.key});
@@ -17,6 +18,15 @@ class Graph extends StatelessWidget {
               fontSize: 25,
               fontFamily: 'Comfortaa'
           ),),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const BaseScreen()),
+              );
+            },
+          ),
         ),
         body: Center(
           child:SizedBox(
