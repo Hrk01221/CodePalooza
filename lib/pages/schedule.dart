@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
+import 'package:realpalooza/pages/competitive.dart';
 import 'package:realpalooza/pages/notification.dart';
 
 
@@ -58,7 +59,7 @@ class _ScheduleState extends State<Schedule> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const BaseScreen()),
+              MaterialPageRoute(builder: (context) => const Competitive()),
             );
           },
         ),
@@ -138,12 +139,7 @@ class ContestSection extends StatelessWidget {
       children: [
         Text(
           title,
-
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.secondary,
-          fontSize: 25,
-          fontFamily: 'Comfortaa'),
-
+          
           style:  TextStyle(
               fontSize: 23,
               //fontWeight: FontWeight.bold,

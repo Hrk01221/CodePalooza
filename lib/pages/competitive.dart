@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
@@ -88,7 +89,14 @@ class _CompetitiveState extends State<Competitive> {
                       height: 100,
                       width: 100,
                       ),
-                MyButton2(onTap: (){}, text: 'Schedule'),
+                MyButton2(onTap: (){
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const Schedule(),
+                      )
+                  );
+                }, text: 'Schedule'),
                 Divider(
                   thickness: 0.5,
                   color: Theme.of(context).colorScheme.secondary,
