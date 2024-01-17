@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/pages/notification.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:realpalooza/Screens/base_screen.dart';
@@ -15,15 +17,64 @@ class _ScheduleState extends State<Schedule> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffe4f3ec),
+      backgroundColor: Theme.of(context).colorScheme.background,
+      appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          centerTitle: true,
+          title: Text(
+            'Schedule',
+            style: TextStyle(
+              fontFamily: 'Comfortaa',
+              fontSize: 25,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+              },
+              icon: Icon(
+                Theme.of(context).brightness == Brightness.dark
+                    ? Icons.dark_mode
+                    : Icons.dark_mode_outlined,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ?Colors.white.withOpacity(.8)
+                    :Colors.grey[800],
+              ),
+            ),
+          ],
+        leading: IconButton(
+          icon: (
+              Icon(
+                Theme.of(context).brightness == Brightness.dark
+                    ? Icons.arrow_back_ios_rounded
+                    : Icons.arrow_back_ios_rounded,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ?Colors.white.withOpacity(.8)
+                    :Colors.grey[800],
+              )
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BaseScreen()),
+            );
+          },
+        ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25),
+            ),
+          )
+      ),
       body: SingleChildScrollView(
-
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 50,),
               ContestSection(
                 title: 'Recent Contest',
                 contests:[
@@ -86,12 +137,10 @@ class ContestSection extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-              fontSize: 23,
-              //fontWeight: FontWeight.bold,
-              color: Color(0xff075e34),
-              fontFamily: 'Comfortaa'
-          ),
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.secondary,
+          fontSize: 25,
+          fontFamily: 'Comfortaa'),
         ),
         const SizedBox(height: 10),
         for (var contest in contests) ContestTile(item: contest),
@@ -138,19 +187,23 @@ class _ContestTileState extends State<ContestTile> {
   @override
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('dd/MM/yy (E) HH:mm').format(widget.item.date);
-
+//Color(0xff099141)
     return ListTile(
-      leading: const Icon(
-        Icons.code_rounded,
-        color: Color(0xff099141),
+      leading: Icon(
+        Theme.of(context).brightness == Brightness.dark
+            ? Icons.code_rounded
+            : Icons.code_rounded,
+        color: Theme.of(context).brightness == Brightness.dark
+            ?Colors.white.withOpacity(.8)
+            :Color(0xff099141),
         size: 30.0,
       ),
       title: Text(
         widget.item.contestName,
-        style: const TextStyle(
-          fontSize: 19,
-          color: Color(0xff099141),
+        style: TextStyle(
           fontFamily: 'Comfortaa',
+          fontSize: 19,
+          color: Theme.of(context).colorScheme.secondary,
         ),
       ),
       subtitle: InkWell(
@@ -185,8 +238,14 @@ class _ContestTileState extends State<ContestTile> {
               }
             });
           },
-          activeColor: const Color(0xff099141),
-          inactiveTrackColor: const Color(0xffe8f5e9),
+          activeColor: //const Color(0xff099141),
+          Theme.of(context).brightness == Brightness.dark
+              ?Color(0xff26b051)
+              :Color(0xff26b051),
+          inactiveTrackColor: //const Color(0xffe8f5e9),
+          Theme.of(context).brightness == Brightness.dark
+              ?Colors.grey[600]
+              :Color(0xffe8f5e9),
         ),
       ),
     );
@@ -211,17 +270,19 @@ class _ContestTileState extends State<ContestTile> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Reminder Set',
-            style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Color(0xff075e34),
-                fontFamily: 'Comfortaa'
+            style: TextStyle(
+              fontFamily: 'Comfortaa',
+              color: Theme.of(context).brightness == Brightness.dark
+                  ?Colors.white.withOpacity(.8)
+                  :Color(0xff075e34),
             ),
           ),
           content: Text('An email will be sent to you 1 hour before the contest.',
-            style: const TextStyle(
-                //fontWeight: FontWeight.bold,
-                color: Color(0xff075e34),
-                fontFamily: 'Comfortaa'
+            style: TextStyle(
+                fontFamily: 'Comfortaa',
+                color: Theme.of(context).brightness == Brightness.dark
+                    ?Colors.white.withOpacity(.8)
+                    :Color(0xff075e34),
             ),
           ),
           actions: [
@@ -238,9 +299,11 @@ class _ContestTileState extends State<ContestTile> {
                   Navigator.of(context).pop();
                 },
                 child: Text('OK',
-                  style: const TextStyle(
-                      color: Color(0xff075e34),
-                      fontFamily: 'Comfortaa'
+                  style: TextStyle(
+                    fontFamily: 'Comfortaa',
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ?Colors.black.withOpacity(.8)
+                        :Color(0xff099141),
                   ),
                 ),
               ),
