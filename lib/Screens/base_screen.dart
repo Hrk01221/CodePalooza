@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:realpalooza/Screens/profile.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
+import 'package:realpalooza/pages/competitive.dart';
 import 'package:realpalooza/pages/schedule.dart';
 
 import 'learning.dart';
@@ -23,7 +24,7 @@ class _BaseScreenState extends State<BaseScreen> {
   static final List<Widget> _widgetoptions = <Widget>[
     const Profile(),
     LearnProgrammingPage(),
-    const Schedule(),
+    const Competitive(),
     const Profile(),
   ];
   @override
