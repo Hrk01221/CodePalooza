@@ -5,6 +5,7 @@ import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/components/my_button2.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/pages/graph_code.dart';
+import 'package:realpalooza/pages/icpc_ranking.dart';
 import 'package:realpalooza/pages/notification.dart';
 import 'package:realpalooza/pages/schedule.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -101,7 +102,6 @@ class _CompetitiveState extends State<Competitive> {
                   thickness: 0.5,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-
                 const SizedBox(width: 30,),
               ],
             ),
@@ -123,7 +123,6 @@ class _CompetitiveState extends State<Competitive> {
                   thickness: 0.5,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-
                 const SizedBox(width: 30,),
               ],
             ),
@@ -140,18 +139,24 @@ class _CompetitiveState extends State<Competitive> {
                   height: 100,
                   width: 100,
                 ),
-                MyButton2(onTap: (){}, text: 'ICPC Rankings'),
+                MyButton2(onTap: (){
+                  Navigator.push( context,
+                  MaterialPageRoute(
+                      builder: (context) => const ICPCranking(),
+                    ),
+                  );
+                },
+                    text: 'ICPC Rankings',
+                ),
                 Divider(
                   thickness: 0.5,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-
                 const SizedBox(width: 30,),
               ],
             ),
           ],
         ),
-
       ),
     );
   }
