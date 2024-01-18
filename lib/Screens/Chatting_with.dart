@@ -18,7 +18,6 @@ class ChattingPage extends StatelessWidget {
     required this.recievername,
      required this.recieverID,
      required this.recieverdp,
-
   });
 
   final TextEditingController _messageController = TextEditingController();

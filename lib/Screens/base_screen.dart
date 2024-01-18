@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:realpalooza/Screens/profile.dart';
+import 'package:realpalooza/Screens/settings.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
 import 'package:realpalooza/pages/competitive.dart';
@@ -25,7 +26,7 @@ class _BaseScreenState extends State<BaseScreen> {
     const Profile(),
     LearnProgrammingPage(),
     const Competitive(),
-    const Profile(),
+    Settings(),
   ];
   @override
   Widget build(BuildContext context) {
