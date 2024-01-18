@@ -43,7 +43,7 @@ class Settings extends StatelessWidget {
           leading: IconButton(
             onPressed: (){
 
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) {

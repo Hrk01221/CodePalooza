@@ -1,14 +1,11 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/components/my_button2.dart';
 import 'package:realpalooza/constant/icons.dart';
-import 'package:realpalooza/pages/graph_code.dart';
 import 'package:realpalooza/pages/icpc_ranking.dart';
-import 'package:realpalooza/pages/notification.dart';
+import 'package:realpalooza/pages/icpcarchive.dart';
 import 'package:realpalooza/pages/schedule.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:realpalooza/Screens/base_screen.dart';
 
 class Competitive extends StatefulWidget {
@@ -61,7 +58,7 @@ class _CompetitiveState extends State<Competitive> {
             )
           ),
           onPressed: () {
-            Navigator.push(context,
+            Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const BaseScreen()),
             );
           },
@@ -118,7 +115,15 @@ class _CompetitiveState extends State<Competitive> {
                   height: 100,
                   width: 100,
                 ),
-                MyButton2(onTap: (){}, text: 'ICPC Archive'),
+                MyButton2(onTap: (){
+                  Navigator.pushReplacement( context,
+                    MaterialPageRoute(
+                      builder: (context) => const Icpcarchive(),
+                    ),
+                  );
+                },
+                    text: 'ICPC Archive'
+                ),
                 Divider(
                   thickness: 0.5,
                   color: Theme.of(context).colorScheme.secondary,
@@ -140,7 +145,7 @@ class _CompetitiveState extends State<Competitive> {
                   width: 100,
                 ),
                 MyButton2(onTap: (){
-                  Navigator.push( context,
+                  Navigator.pushReplacement( context,
                   MaterialPageRoute(
                       builder: (context) => const ICPCranking(),
                     ),

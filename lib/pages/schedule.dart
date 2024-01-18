@@ -57,7 +57,7 @@ class _ScheduleState extends State<Schedule> {
               )
           ),
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const Competitive()),
             );
