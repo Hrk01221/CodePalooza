@@ -24,6 +24,7 @@ class ChatService {
     final String currentUserID = currentUser.email!;
     final String currentUserEmail = currentUser.email!;
     final Timestamp timestamp = Timestamp.now();
+    final String timest = DateTime.now().hour.toString()+':'+(DateTime.now().hour.toString().length==1?'0'+DateTime.now().hour.toString():DateTime.now().hour.toString());
 
     Message newMessage = Message(
       senderEmail: currentUserEmail,
@@ -31,6 +32,7 @@ class ChatService {
       senderID: currentUserID,
       recieverID: recieverID,
       timestamp: timestamp,
+      timest : timest,
     );
 
     List<String> ids = [currentUserID,recieverID];
@@ -42,6 +44,7 @@ class ChatService {
         .doc(chatRoomID)
         .collection("messages")
         .add(newMessage.toMap());
+
   }
 
   Stream<QuerySnapshot> getMessages(String userID,otherUserID){
