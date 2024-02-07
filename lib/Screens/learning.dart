@@ -40,7 +40,7 @@ class LearnProgrammingPage extends StatelessWidget {
             leading: IconButton(
               onPressed: (){
 
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
@@ -152,7 +152,7 @@ class TopicButton extends StatelessWidget {
         ),
         trailing: ElevatedButton(
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) {

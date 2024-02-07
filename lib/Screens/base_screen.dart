@@ -5,7 +5,6 @@ import 'package:realpalooza/Screens/settings.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
 import 'package:realpalooza/pages/competitive.dart';
-import 'package:realpalooza/pages/schedule.dart';
 
 import 'learning.dart';
 

@@ -124,7 +124,6 @@ class _SettingsPageState extends State<Settings> {
       ),
     );
   }
-
   Widget buildSectionHeader(String title) {
     return Row(
       children: [

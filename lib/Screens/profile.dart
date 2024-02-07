@@ -77,7 +77,7 @@ class _ProfileState extends State<Profile> {
             leading: IconButton(
               onPressed: (){
 
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
