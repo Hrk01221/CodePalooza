@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../Screens/base_screen.dart';
 import '../Theme/theme_provider.dart';
 import '../components/my_text_field.dart';
 import 'comment.dart';
@@ -92,15 +93,17 @@ class TopicDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
             centerTitle: true,
-            title: Text(topicName,style: TextStyle(
-              fontFamily: 'Comfortaa',
-              fontSize: 20,
-              color: Theme.of(context).colorScheme.secondary,
-            ),
+            title: Text(
+              topicName,
+              style: TextStyle(
+                fontFamily: 'Comfortaa',
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
             actions: [
               IconButton(
@@ -117,7 +120,23 @@ class TopicDetailPage extends StatelessWidget {
                 ),
               ),
             ],
-
+            leading: IconButton(
+              icon: (
+                  Icon(
+                    Theme.of(context).brightness == Brightness.dark
+                        ? Icons.arrow_back_ios_rounded
+                        : Icons.arrow_back_ios_rounded,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ?Colors.white.withOpacity(.8)
+                        :Colors.grey[800],
+                  )
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const BaseScreen()),
+                );
+              },
+            ),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
