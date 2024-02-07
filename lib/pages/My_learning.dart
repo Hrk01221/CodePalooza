@@ -133,7 +133,9 @@ class TopicDetailPage extends StatelessWidget {
               ),
               onPressed: () {
                 Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const BaseScreen()),
+                  MaterialPageRoute(builder: (context) => const BaseScreen(
+                    selectedIndex: 1,
+                  )),
                 );
               },
             ),

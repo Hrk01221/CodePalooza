@@ -59,7 +59,9 @@ class _CompetitiveState extends State<Competitive> {
           ),
           onPressed: () {
             Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const BaseScreen()),
+              MaterialPageRoute(builder: (context) => const BaseScreen(
+                selectedIndex: 0,
+              )),
             );
           },
         ),

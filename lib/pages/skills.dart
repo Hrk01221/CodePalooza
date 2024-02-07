@@ -44,7 +44,9 @@ class  Skills extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) {
-                    return BaseScreen();
+                    return BaseScreen(
+                      selectedIndex: 0,
+                    );
                   },
                 ),
               );

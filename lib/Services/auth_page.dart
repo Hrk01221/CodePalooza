@@ -19,7 +19,7 @@ class _AuthpageState extends State<Authpage> {
           builder: (context,snapshot){
             //user logged in
             if(snapshot.hasData){
-              return const BaseScreen();
+              return const BaseScreen(selectedIndex: 0,);
             }
             //user not logged in
             else{

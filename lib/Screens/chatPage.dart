@@ -68,7 +68,9 @@ class _ChatPageState extends State<ChatPage> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BaseScreen(),
+                      builder: (context) => BaseScreen(
+                        selectedIndex: 0,
+                      ),
                     )
                 );
               }
