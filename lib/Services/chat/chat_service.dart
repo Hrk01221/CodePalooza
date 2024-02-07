@@ -24,7 +24,7 @@ class ChatService {
     final String currentUserID = currentUser.email!;
     final String currentUserEmail = currentUser.email!;
     final Timestamp timestamp = Timestamp.now();
-    final String timest = DateTime.now().hour.toString()+':'+(DateTime.now().hour.toString().length==1?'0'+DateTime.now().hour.toString():DateTime.now().hour.toString());
+    final String timest = DateTime.now().hour.toString()+':'+(DateTime.now().minute.toString().length==1?'0'+DateTime.now().minute.toString():DateTime.now().minute.toString());
 
     Message newMessage = Message(
       senderEmail: currentUserEmail,
