@@ -71,7 +71,6 @@ class _CompetitiveState extends State<Competitive> {
         )
       ),
       body: SingleChildScrollView(
-
         child: Column(
           children: [
             const SizedBox(

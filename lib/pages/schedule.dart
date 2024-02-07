@@ -1,12 +1,26 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/pages/competitive.dart';
-import 'package:realpalooza/pages/notification.dart';
-
-
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+class Contest {
+  final String name;
+  final DateTime startTime;
+
+  Contest({required this.name, required this.startTime});
+
+  factory Contest.fromJson(Map<String, dynamic> json) {
+    return Contest(
+      name: json['name'],
+      startTime: DateTime.fromMillisecondsSinceEpoch(json['startTimeSeconds'] * 1000),
+    );
+  }
+}
+
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
   @override
@@ -14,6 +28,38 @@ class Schedule extends StatefulWidget {
 }
 
 class _ScheduleState extends State<Schedule> {
+  late List<bool> isReminderEnabledList;
+  late List<Contest> _contests = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchContests();
+  }
+
+  Future<void> _fetchContests() async {
+    try {
+      final response = await http.get(Uri.parse('https://codeforces.com/api/contest.list'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        List<Contest> contests = [];
+        List<bool> reminderList = [];
+        for (var contest in data['result']) {
+          contests.add(Contest.fromJson(contest));
+          reminderList.add(false); // Initialize all reminders as false initially
+        }
+        setState(() {
+          _contests = contests;
+          isReminderEnabledList = reminderList;
+        });
+      } else {
+        throw Exception('Failed to load contests: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching contests: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,24 +91,24 @@ class _ScheduleState extends State<Schedule> {
               ),
             ),
           ],
-        leading: IconButton(
-          icon: (
-              Icon(
-                Theme.of(context).brightness == Brightness.dark
-                    ? Icons.arrow_back_ios_rounded
-                    : Icons.arrow_back_ios_rounded,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ?Colors.white.withOpacity(.8)
-                    :Colors.grey[800],
-              )
+          leading: IconButton(
+            icon: (
+                Icon(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? Icons.arrow_back_ios_rounded
+                      : Icons.arrow_back_ios_rounded,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ?Colors.white.withOpacity(.8)
+                      :Colors.grey[800],
+                )
+            ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Competitive()),
+              );
+            },
           ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const Competitive()),
-            );
-          },
-        ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(25),
@@ -70,206 +116,71 @@ class _ScheduleState extends State<Schedule> {
             ),
           )
       ),
-
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: _contests != null && _contests.isNotEmpty
+          ? ListView.builder(
+        itemCount: _contests.length,
+        itemBuilder: (context, index) {
+          final startTimeFormatted = DateFormat('dd-MM-yyyy HH:mm:ss').format(_contests[index].startTime);
+          return Column(
             children: [
-              ContestSection(
-                title: 'Recent Contest',
-                contests:[
-                  ContestItem(
-                    logo: Icons.code_rounded,
-                    date: DateTime.now(),
-                    contestName: 'Contest 2024',
+              ListTile(
+                title: GestureDetector(
+                  onTap: () async {
+                    final Uri uri = Uri.parse('https://codeforces.com/contests/${_contests[index].name}');
+                    if (await canLaunch(uri.toString())) {
+                      await launch(uri.toString());
+                    } else {
+                      throw 'Could not launch $uri';
+                    }
+                  },
+                  child: Text('${_contests[index].name}',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontFamily: 'Comfortaa',
+                    ),
                   ),
-                  ContestItem(
-                    logo: Icons.code_rounded,
-                    date: DateTime.now().subtract(const Duration(days: 5)),
-                    contestName: 'Code Challenge',
+                ),
+                subtitle: Text('$startTimeFormatted',
+                  style: TextStyle(
+                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                    fontFamily: 'Comfortaa',
                   ),
-                  ContestItem(
-                    logo: Icons.code_rounded,
-                    date: DateTime.now().subtract(const Duration(days: 10)),
-                    contestName: 'Up Comp',
-                  ),
-                ],
+                ),
+                trailing: Switch(
+                  value: isReminderEnabledList[index],
+                  onChanged: (value) {
+                    setState(() {
+                      isReminderEnabledList[index] = value;
+                      if (isReminderEnabledList[index]) {
+                        _showPopupMessage(context);
+                        // Add logic to set a reminder for this contest
+                      } else {
+                        // Add logic to cancel the reminder for this contest
+                      }
+                    });
+                  },
+                  activeColor: //const Color(0xff099141),
+                  Theme.of(context).brightness == Brightness.dark
+                      ?Color(0xff26b051)
+                      :Color(0xff26b051),
+                  inactiveTrackColor: //const Color(0xffe8f5e9),
+                  Theme.of(context).brightness == Brightness.dark
+                      ?Colors.grey[600]
+                      :Color(0xffe8f5e9),
+                ),
               ),
-              const SizedBox(height: 20),
-              ContestSection(
-                title: 'Upcoming Contest',
-                contests: [
-                  ContestItem(
-                    logo: Icons.code_rounded,
-                    date: DateTime.now().add(const Duration(days: 15)),
-                    contestName: 'Code Jam',
-                  ),
-                  ContestItem(
-                    logo: Icons.code_rounded,
-                    date: DateTime.now().add(const Duration(days: 20)),
-                    contestName: 'March Coding',
-                  ),
-                  ContestItem(
-                    logo: Icons.code_rounded,
-                    date: DateTime.now().add(const Duration(days: 30)),
-                    contestName: 'Hackathon',
-                  ),
-                ],
-              ),
+              Divider(
+                thickness: 0.5,
+                color: Theme.of(context).colorScheme.secondary,
+              ), // Add a Divider after each ListTile
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class ContestSection extends StatelessWidget {
-  final String title;
-  final List<ContestItem> contests;
-
-  const ContestSection({super.key, required this.title, required this.contests});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          
-          style:  TextStyle(
-              fontSize: 23,
-              //fontWeight: FontWeight.bold,
-              color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.8) : Color(0xff26b051),
-              fontFamily: 'Comfortaa'
-          ),
-
-        ),
-        const SizedBox(height: 10),
-        for (var contest in contests) ContestTile(item: contest),
-      ],
-    );
-  }
-}
-
-class ContestItem {
-  final IconData logo;
-  final DateTime date;
-  final String contestName;
-
-  ContestItem({
-    required this.logo,
-    required this.date,
-    required this.contestName,
-  });
-}
-
-class ContestTile extends StatefulWidget {
-  final ContestItem item;
-
-  const ContestTile({super.key, required this.item});
-
-  @override
-  _ContestTileState createState() => _ContestTileState();
-}
-
-class _ContestTileState extends State<ContestTile> {
-  bool isReminderEnabled = false;
-  final MaterialStateProperty<Icon?> checkIcon =
-  MaterialStateProperty.resolveWith<Icon?>(
-        (Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
-        return const Icon(Icons.notifications_on,
-          color: Color(0xffe8f5e9),
-        );
-      }
-      //return const Icon(Icons.notifications);
-    },
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    String formattedDate = DateFormat('dd/MM/yy (E) HH:mm').format(widget.item.date);
-//Color(0xff099141)
-    return ListTile(
-      leading: Icon(
-        Theme.of(context).brightness == Brightness.dark
-            ? Icons.code_rounded
-            : Icons.code_rounded,
-        color: Theme.of(context).brightness == Brightness.dark
-            ?Colors.white.withOpacity(.8)
-            :Color(0xff099141),
-        size: 30.0,
-      ),
-      title: Text(
-        widget.item.contestName,
-        style: TextStyle(
-          fontFamily: 'Comfortaa',
-          fontSize: 19,
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
-      subtitle: InkWell(
-        onTap: () {
-          _launchURL(widget.item);
+          );
         },
-        child: Text(
-          formattedDate,
-          style: const TextStyle(
-            fontSize: 15,
-            color: Colors.blue,
-          ),
-        ),
-      ),
-      trailing:
-      Transform.scale(
-        scale: 0.88,
-        child: Switch.adaptive(
-          thumbIcon: checkIcon,
+      )
 
-          applyCupertinoTheme: false,
-          value: isReminderEnabled,
-          onChanged: (value) {
-            setState(() {
-              isReminderEnabled = value;
-              // Handle reminder logic here
-              if (isReminderEnabled) {
-                _showPopupMessage(context);
-                // Add logic to set a reminder
-              } else {
-                // Add logic to cancel the reminder
-              }
-            });
-          },
-          activeColor: //const Color(0xff099141),
-          Theme.of(context).brightness == Brightness.dark
-              ?Color(0xff26b051)
-              :Color(0xff26b051),
-          inactiveTrackColor: //const Color(0xffe8f5e9),
-          Theme.of(context).brightness == Brightness.dark
-              ?Colors.grey[600]
-              :Color(0xffe8f5e9),
-        ),
-      ),
+          : Center(child: CircularProgressIndicator()),
     );
   }
-
-  void _launchURL(ContestItem item) async {
-    String formattedDateTime = DateFormat('yyyyMMddTHHmm').format(item.date);
-    String url = 'https://www.timeanddate.com/worldclock/fixedtime.html?iso=$formattedDateTime&p1=248';
-
-    Uri uri = Uri.parse(url);
-
-    if (await canLaunchUrl(uri)) { // Change canLaunch to canLaunchUrl
-      await launch(uri.toString());// Assuming you have a launch import statement in your code
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-  // Function to show the popup message
   void _showPopupMessage(BuildContext context) {
     showDialog(
       context: context,
@@ -285,10 +196,10 @@ class _ContestTileState extends State<ContestTile> {
           ),
           content: Text('An email will be sent to you 1 hour before the contest.',
             style: TextStyle(
-                fontFamily: 'Comfortaa',
-                color: Theme.of(context).brightness == Brightness.dark
-                    ?Colors.white.withOpacity(.8)
-                    :Color(0xff075e34),
+              fontFamily: 'Comfortaa',
+              color: Theme.of(context).brightness == Brightness.dark
+                  ?Colors.white.withOpacity(.8)
+                  :Color(0xff075e34),
             ),
           ),
           actions: [
@@ -296,7 +207,7 @@ class _ContestTileState extends State<ContestTile> {
               width: 50.0,
               height: 40.0,
               decoration: BoxDecoration(
-              shape: BoxShape.circle,
+                shape: BoxShape.circle,
                 color: Colors.white,
               ),
               child: TextButton(
