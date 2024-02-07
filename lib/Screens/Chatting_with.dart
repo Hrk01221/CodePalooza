@@ -9,7 +9,7 @@ import 'package:realpalooza/components/text_field_two.dart';
 
 import '../Theme/theme_provider.dart';
 
-class ChattingPage extends StatelessWidget {
+class ChattingPage extends StatefulWidget {
   final String recievername;
   final String recieverID;
   final String recieverdp;
@@ -20,18 +20,59 @@ class ChattingPage extends StatelessWidget {
      required this.recieverdp,
   });
 
+  @override
+  State<ChattingPage> createState() => _ChattingPageState();
+}
+
+class _ChattingPageState extends State<ChattingPage> {
   final TextEditingController _messageController = TextEditingController();
 
   final  ChatService _chatService = ChatService();
+
   final currentUser = FirebaseAuth.instance.currentUser!;
+
+  FocusNode myFocusNode = FocusNode();
+
+  void initState(){
+    super.initState();
+    myFocusNode.addListener(() {
+      if(myFocusNode.hasFocus){
+        Future.delayed(
+          const Duration(milliseconds: 500),
+              ()=>scrollDown(),
+        );
+      }
+    });
+    Future.delayed(
+      const Duration(milliseconds: 500),
+          ()=>scrollDown(),
+    );
+  }
+
+  void dispose(){
+    myFocusNode.dispose();
+    super.dispose();
+  }
+
+  final ScrollController _scrollController = ScrollController();
+
+  void scrollDown(){
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.fastOutSlowIn,
+    );
+  }
 
   void sendMessage() async {
 
     if(_messageController.text.isNotEmpty){
-      await _chatService.sendMessage(recieverID, _messageController.text);
+      await _chatService.sendMessage(widget.recieverID, _messageController.text);
 
       _messageController.clear();
     }
+
+    scrollDown();
   }
 
   @override
@@ -47,12 +88,12 @@ class ChattingPage extends StatelessWidget {
               height: 30,
               child: ClipOval(
                 child: Image.network(
-                    recieverdp
+                    widget.recieverdp
                 ),
               ),
             ),
             const SizedBox(width: 20,),
-            Text(recievername,style: TextStyle(color:Theme.of(context).colorScheme.secondary,fontFamily: 'Comfortaa',fontSize: 16),),
+            Text(widget.recievername,style: TextStyle(color:Theme.of(context).colorScheme.secondary,fontFamily: 'Comfortaa',fontSize: 16),),
           ],
         ),
         actions: [
@@ -91,7 +132,7 @@ class ChattingPage extends StatelessWidget {
   Widget _buildMessageList(){
     String senderID = currentUser.email!;
     return StreamBuilder(
-        stream: _chatService.getMessages(recieverID, senderID),
+        stream: _chatService.getMessages(widget.recieverID, senderID),
         builder: (context,snapshot){
           if(snapshot.hasError){
             return const Text("Error");
@@ -101,6 +142,7 @@ class ChattingPage extends StatelessWidget {
           }
 
           return ListView(
+            controller: _scrollController,
             children:
               snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
           );
@@ -126,6 +168,7 @@ class ChattingPage extends StatelessWidget {
             ChatBubble(
                 message: data["message"],
                 isCurrentUser: isCurrentUser,
+                timest: data["timest"],
             )
           ],
         )
@@ -142,6 +185,7 @@ class ChattingPage extends StatelessWidget {
                 controller: _messageController,
                 hintText: "Type A Message",
                 obscuretext: false,
+                focusNode: myFocusNode,
               )
           ),
               Container(
@@ -156,5 +200,4 @@ class ChattingPage extends StatelessWidget {
       ),
     );
   }
-
 }
