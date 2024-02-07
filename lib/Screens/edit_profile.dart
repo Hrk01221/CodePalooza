@@ -32,6 +32,7 @@ class _EditProfilleState extends State<EditProfille> {
   String imageUrl = '';
 
   bool isUploading = false;
+  FocusNode myFocusNode = FocusNode();
 
   void errorShowMessage(BuildContext context, String text) {
     showGeneralDialog(
@@ -398,6 +399,7 @@ class _EditProfilleState extends State<EditProfille> {
                             controller: UserNameController,
                             hintText: 'Enter Your New Name',
                             obscuretext: false,
+                            focusNode: myFocusNode,
                           ),
                           const SizedBox(
                             height: 50,
@@ -406,6 +408,7 @@ class _EditProfilleState extends State<EditProfille> {
                             controller: Cf,
                             hintText: 'Enter Your CodeForces Handle',
                             obscuretext: false,
+                            focusNode: myFocusNode,
                           ),
                           const SizedBox(
                             height: 50,
@@ -414,6 +417,7 @@ class _EditProfilleState extends State<EditProfille> {
                             controller: Cc,
                             hintText: 'Enter Your CodeChef Handle',
                             obscuretext: false,
+                            focusNode: myFocusNode,
                           ),
                           const SizedBox(
                             height: 50,
@@ -422,6 +426,7 @@ class _EditProfilleState extends State<EditProfille> {
                             controller: Atc,
                             hintText: 'Enter Your Atcoder Handle',
                             obscuretext: false,
+                            focusNode: myFocusNode,
                           ),
                           const SizedBox(height: 50,),
                           GestureDetector(
