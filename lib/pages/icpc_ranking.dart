@@ -6,109 +6,11 @@ import 'package:realpalooza/pages/competitive.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../Screens/base_screen.dart';
 import '../Screens/chatPage.dart';
+import 'package:icons_plus/icons_plus.dart';
 
-class TopicButton extends StatelessWidget {
-  final String topicName;
-  final List<String> urls;
-
-  TopicButton({required this.topicName, required this.urls});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListTile(
-        title: Text(
-          topicName,
-          style: TextStyle(
-            fontFamily: 'Comfortaa',
-            fontSize: 17,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-        trailing: ElevatedButton(
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return TopicDetailPage(topicName: topicName, urls: urls);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'Explore',
-            style: TextStyle(color: Color(0xff26b051)),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TopicDetailPage extends StatelessWidget {
-  final String topicName;
-  final List<String> urls;
-
-  TopicDetailPage({required this.topicName, required this.urls});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          centerTitle: true,
-          title: Text(topicName,style: TextStyle(
-            fontFamily: 'Comfortaa',
-            fontSize: 20,
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-              },
-              icon: Icon(
-                Theme.of(context).brightness == Brightness.dark
-                    ? Icons.dark_mode
-                    : Icons.dark_mode_outlined,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ?Colors.white.withOpacity(.8)
-                    :Colors.grey[800],
-              ),
-            ),
-          ],
-
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
-          )
-      ),
-      body: ListView.builder(
-        itemCount: urls.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              urls[index],
-              style: TextStyle(
-                fontFamily: 'Comfortaa',
-                fontSize: 18,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            onTap: () {
-              launchURL(urls[index]);
-            },
-          );
-        },
-      ),
-    );
-  }
+import '../constant/icons.dart';
 
   void launchURL(String url) async {
     // ignore: deprecated_member_use
@@ -119,7 +21,6 @@ class TopicDetailPage extends StatelessWidget {
       throw 'Could not launch $url';
     }
   }
-}
 
 class ICPCranking extends StatefulWidget {
   const ICPCranking({super.key});
@@ -133,14 +34,15 @@ class _ICPCranking extends State<ICPCranking> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
+
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           title: Text(
-            'Learn Competitive Programming',
+            'ICPC Ranking',
             style: TextStyle(
               fontFamily: 'Comfortaa',
-              fontSize: 18,
+              fontSize: 25,
               color: Theme.of(context).colorScheme.secondary,
             ),
           ),
@@ -160,27 +62,22 @@ class _ICPCranking extends State<ICPCranking> {
             ),
           ],
           leading: IconButton(
-            onPressed: (){
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return ChatPage();
-                  },
-                ),
-              );
-            },
             icon: (
                 Icon(
                   Theme.of(context).brightness == Brightness.dark
-                      ? Icons.chat_bubble_outlined
-                      : Icons.chat_bubble_outline,
+                      ? Icons.arrow_back_ios_rounded
+                      : Icons.arrow_back_ios_rounded,
                   color: Theme.of(context).brightness == Brightness.dark
                       ?Colors.white.withOpacity(.8)
                       :Colors.grey[800],
                 )
             ),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const Competitive()),
+              );
+            },
           ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -189,67 +86,168 @@ class _ICPCranking extends State<ICPCranking> {
             ),
           )
       ),
-      body: Column(
-        children: [
-          TopicButton(
-            topicName: 'What is Competitive Programming?',
-            urls: [
-              "https://en.wikipedia.org/wiki/Competitive_programming",
-              "https://www.geeksforgeeks.org/how-to-prepare-for-competitive-programming/",
-              "https://emeritus.org/blog/coding-competitive-programming/"
-              // Add more URLs for the topic as needed
-            ],
-          ),
-          TopicButton(
-            topicName: 'Linear Search Algorithm',
-            urls: [
-              "https://www.geeksforgeeks.org/linear-search/",
-              "https://www.tutorialspoint.com/data_structures_algorithms/linear_search_algorithm.htm",
-              "https://www.javatpoint.com/linear-search",
-              // Add more URLs for the topic as needed
-            ],
-          ),
-          TopicButton(
-            topicName: 'Binary Search',
-            urls: [
-              "https://www.geeksforgeeks.org/binary-search/",
-              "https://www.programiz.com/dsa/binary-search",
-              "https://www.youtube.com/watch?app=desktop&v=ARtYEZjOTbU&ab_channel=DBSTalks"
-              // Add more URLs for the topic as needed
-            ],
-          ),
-          TopicButton(
-            topicName: 'Unbounded Binary Search',
-            urls: [
-              "https://www.geeksforgeeks.org/find-the-point-where-a-function-becomes-negative/",
-              "https://www.techiedelight.com/unbounded-binary-search/",
-              "https://stackoverflow.com/questions/66609233/unbounded-binary-search-finding-the-point-where-a-monotonically-increasing-func"
-              // Add more URLs for the topic as needed
-            ],
-          ),
-          TopicButton(
-            topicName: 'Merge Sort',
-            urls: [
-              "https://www.geeksforgeeks.org/merge-sort/",
-              "https://www.programiz.com/dsa/merge-sort",
-              "https://www.javatpoint.com/merge-sort"
-              // Add more URLs for the topic as needed
-            ],
-          ),
-          TopicButton(
-            topicName: 'QuickSort',
-            urls: [
-              "https://geeksforgeeks.org/quick-sort/",
-              "https://www.programiz.com/dsa/quick-sort",
-              "https://www.javatpoint.com/quick-sort"
-              // Add more URLs for the topic as needed
-            ],
-          ),
 
-          // Add more TopicButtons as needed
-        ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ContestSection(
+                title: 'Top 4 winners of',
+                subtitle: 'ICPC World Final 2022',
+                contests:[
+                  ContestItem(
+                    solve: 'United States',
+                    teamName: 'Massachusetts Institute of Technology',
+                    rank: '1st',
+                  ),
+                  ContestItem(
+                    solve: 'China',
+                    teamName: 'Peking University',
+                    rank: '2nd',
+                  ),
+                  ContestItem(
+                    solve: 'Japan',
+                    teamName: 'The University of Tokyo',
+                    rank: '3rd',
+                  ),
+                  ContestItem(
+                    solve: 'South Korea',
+                    teamName: 'Seoul National University',
+                    rank: '4th',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              ContestSection(
+                title: 'Top 4 winners of',
+                subtitle: 'ICPC World Final 2021',
+                contests: [
+                  ContestItem(
+                    solve: 'Russia',
+                    teamName: 'Nizhny Novgorod State University',
+                    rank: '1st',
+                  ),
+                  ContestItem(
+                    solve: 'South Korea',
+                    teamName: 'Seoul National University',
+                    rank: '2nd',
+                  ),
+                  ContestItem(
+                    solve: 'Russia',
+                    teamName: 'St. Petersburg ITMO University',
+                    rank: '3rd',
+                  ),
+                  ContestItem(
+                    solve: 'Russia',
+                    teamName: 'Moscow Institute of Physics and Technology',
+                    rank: '4th',
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
-        );
+    );
+  }
+}
 
+class ContestSection extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final List<ContestItem> contests;
+
+  const ContestSection({required this.title, required this.subtitle, required this.contests});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+              fontSize: 19,
+              //fontWeight: FontWeight.bold,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Color(0xff075e34),
+              fontFamily: 'Comfortaa'
+          ),
+        ),
+        Text(
+          subtitle,
+          style: TextStyle(
+              fontSize: 23,
+              //fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary,
+              fontFamily: 'Comfortaa'
+          ),
+        ),
+        const SizedBox(height: 10),
+        for (var contest in contests) ContestTile(item: contest),
+      ],
+    );
+  }
+}
+
+class ContestItem {
+  final String teamName;
+  final String solve;
+  final String rank;
+
+  ContestItem({
+    required this.teamName,
+    required this.solve,
+    required this.rank,
+  });
+}
+
+class ContestTile extends StatefulWidget {
+  final ContestItem item;
+
+  const ContestTile({required this.item});
+
+  @override
+  _ContestTileState createState() => _ContestTileState();
+}
+
+class _ContestTileState extends State<ContestTile> {
+
+  @override
+  Widget build(BuildContext context) {
+
+    return ListTile(
+      leading:
+      Image.asset(
+        trophy,
+        height: 20,
+        width: 20,
+      ),
+      title: Text(
+        widget.item.teamName,
+        style: TextStyle(
+          fontSize: 19,
+          color: Theme.of(context).colorScheme.secondary,
+          fontFamily: 'Comfortaa',
+        ),
+      ),
+      subtitle: Text(
+        widget.item.solve,
+        style: TextStyle(
+          fontSize: 15,
+          color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Color(0xff075e34),
+          fontFamily: 'Comfortaa',
+        ),
+      ),
+      trailing:Text(
+            "Ranked: "+widget.item.rank,
+            style: TextStyle(
+            fontSize: 19,
+              color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Color(0xff075e34),
+            fontFamily: 'Comfortaa',
+        ),
+      ),
+    );
   }
 }
