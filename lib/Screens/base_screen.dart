@@ -5,33 +5,35 @@ import 'package:realpalooza/Screens/settings.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/constant/size.dart';
 import 'package:realpalooza/pages/competitive.dart';
-
 import 'learning.dart';
 
 class BaseScreen extends StatefulWidget {
-  const BaseScreen({super.key});
+  final int selectedIndex;
+
+  const BaseScreen({Key? key, required this.selectedIndex}) : super(key: key);
+
   @override
-  State<BaseScreen> createState() => _BaseScreenState();
+  State<BaseScreen> createState() => _BaseScreenState(selectedIndex);
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-
+  int _selectedIndex;
   final user = FirebaseAuth.instance.currentUser!;
-  //sign user out
 
-  int _selectedIndex = 0;
+  _BaseScreenState(this._selectedIndex);
 
-  static final List<Widget> _widgetoptions = <Widget>[
+  static final List<Widget> _widgetOptions = <Widget>[
     const Profile(),
     LearnProgrammingPage(),
     const Competitive(),
     Settings(),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetoptions.elementAt(_selectedIndex),
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
