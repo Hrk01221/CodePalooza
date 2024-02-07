@@ -1,5 +1,11 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:realpalooza/components/my_text_field.dart';
+import 'package:realpalooza/pages/comment.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../Theme/theme_provider.dart';
 import 'chatPage.dart';
@@ -67,7 +73,8 @@ class LearnProgrammingPage extends StatelessWidget {
               ),
             )
         ),
-      body: Column(
+      body: SingleChildScrollView(
+      child:Column(
         children: [
           TopicButton(
             topicName: 'What is Competitive Programming?',
@@ -127,6 +134,7 @@ class LearnProgrammingPage extends StatelessWidget {
           // Add more TopicButtons as needed
         ],
       ),
+      ),
     );
   }
 }
@@ -174,12 +182,48 @@ class TopicButton extends StatelessWidget {
 class TopicDetailPage extends StatelessWidget {
   final String topicName;
   final List<String> urls;
+  
+  final currentUser=FirebaseAuth.instance.currentUser!;
+  final textController=TextEditingController();
 
   TopicDetailPage({required this.topicName, required this.urls});
+
+  //post message
+
+  void postMessage(){
+    //only post if there is something in the textfield
+    if(textController.text.isNotEmpty){
+      //store in firebase
+      FirebaseFirestore.instance.collection("User posts").add({
+        'UserEmail':currentUser.email,
+        'Message':textController.text,
+        'TimeStamp':Timestamp.now(),
+      });
+    }
+
+  }
+
+  //add a comment
+  void addComment(String commentText){
+    //write the comment to firestore under the comments collection for this page
+    var widget;
+    var currentUser;
+    FirebaseFirestore.instance.
+    collection("User Posts").
+    doc(widget.postId).
+    collection("Comment").
+    add({
+      "CommentText":commentText,
+      "CommentedBy":currentUser.email,
+      "CommentTime":Timestamp.now()
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
@@ -212,24 +256,87 @@ class TopicDetailPage extends StatelessWidget {
             ),
           )
       ),
-      body: ListView.builder(
-        itemCount: urls.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(
-              urls[index],
-              style: TextStyle(
-                fontFamily: 'Comfortaa',
-                fontSize: 18,
-                color: Theme.of(context).colorScheme.secondary,
+      body: Expanded(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: urls.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                      urls[index],
+                      style: TextStyle(
+                        fontFamily: 'Comfortaa',
+                        fontSize: 18,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                    onTap: () {
+                      launchURL(urls[index]);
+                    },
+                  );
+                },
               ),
             ),
-            onTap: () {
-              launchURL(urls[index]);
-            },
-          );
-        },
-      ),
+            
+            Expanded(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("User Posts")
+                      .orderBy(
+                         "TimeStamp",
+                        descending: false,
+                  ).snapshots(),
+                  builder: (context,snapshot){
+                    if(snapshot.hasData){
+                      return ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context,index){
+                            //get the message
+                            final post=snapshot.data!.docs[index];
+                            return Comment(
+                                message: post['Message'],
+                                user: post['UserEmail'],
+                            );
+                          },
+                      );
+                    }else if(snapshot.hasError){
+                      return Center(
+                        child: Text('Error:${snapshot.error}'),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+            ),
+
+            Padding(padding: const EdgeInsets.all(25.0),
+            child: Row(
+              children: [
+                Expanded(
+                    child: Mytextfield(
+                      controller: textController,
+                      hintText: 'Write your comment..',
+                       obscuretext: false ,
+                    ),
+                ),
+                Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      shape: BoxShape.circle,
+                    ),
+                    //margin: const EdgeInsets.only(right: 25),
+                    child: IconButton(onPressed: postMessage, icon: Icon(Icons.send),
+                    ))
+              ],
+            ),
+            )
+          ],
+        ),
+      )
     );
   }
 
