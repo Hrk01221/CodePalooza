@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
@@ -6,6 +7,8 @@ import 'package:realpalooza/pages/competitive.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'notification.dart';
 
 class Contest {
   final String name;
@@ -152,6 +155,22 @@ class _ScheduleState extends State<Schedule> {
                     setState(() {
                       isReminderEnabledList[index] = value;
                       if (isReminderEnabledList[index]) {
+                        NotificationManager.showNotification(
+                            title: 'Contest Reminder',
+                            //change
+                            body: 'Check your account',
+                            payload: {
+                              "navigate":"true",
+                            },
+                            actionButtons: [
+                              NotificationActionButton(
+                                key: 'check',
+                                label: 'check it out',
+                                actionType: ActionType.SilentAction,
+                                color: Colors.green,
+                              )
+                            ]);
+                        NotificationManager.setNotificationListeners();
                         _showPopupMessage(context);
                         // Add logic to set a reminder for this contest
                       } else {

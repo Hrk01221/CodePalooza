@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -231,6 +232,61 @@ class _SettingsPageState extends State<Settings> {
             onChanged: (value) {
               setState(() {
                 switchValues[index] = value;
+                if(switchValues[index]){
+                  if(index==0) {
+                     print('1');
+                     NotificationManager.showNotification(
+                         title: 'New for you',
+                         body: 'you have a new notification',
+                         payload: {
+                           "navigate":"true",
+                         },
+                         actionButtons: [
+                           NotificationActionButton(
+                             key: 'check',
+                             label: 'check it out',
+                             actionType: ActionType.SilentAction,
+                             color: Colors.green,
+                           )
+                         ]);
+                     NotificationManager.setNotificationListeners();
+                  }
+                  else if(index==1){
+                    print('1');
+                    NotificationManager.showNotification(
+                        title: 'Account activity',
+                        body: 'Check your account',
+                        payload: {
+                          "navigate":"true",
+                        },
+                        actionButtons: [
+                          NotificationActionButton(
+                            key: 'check',
+                            label: 'check it out',
+                            actionType: ActionType.SilentAction,
+                            color: Colors.green,
+                          )
+                        ]);
+                    NotificationManager.setNotificationListeners();
+                  }
+                  else if(index==2){
+                    print('1');
+                    NotificationManager.showNotification(
+                        title: 'Opportunity',
+                        body: 'Are you looking for opportunities?',
+                        payload: {
+                          "navigate":"true",
+                        },
+                        actionButtons: [
+                          NotificationActionButton(
+                            key: 'check',
+                            label: 'check it out',
+                            actionType: ActionType.SilentAction,
+                            color: Colors.green,
+                          )
+                        ]);
+                  }
+                }
               });
             },
           ),
