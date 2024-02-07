@@ -124,76 +124,78 @@ class _ScheduleState extends State<Schedule> {
         itemCount: _contests.length,
         itemBuilder: (context, index) {
           final startTimeFormatted = DateFormat('dd-MM-yyyy HH:mm:ss').format(_contests[index].startTime);
-          return Column(
-            children: [
-              ListTile(
-                title: GestureDetector(
-                  onTap: () async {
-                    final Uri uri = Uri.parse('https://codeforces.com/contests/${_contests[index].name}');
-                    if (await canLaunch(uri.toString())) {
-                      await launch(uri.toString());
-                    } else {
-                      throw 'Could not launch $uri';
-                    }
-                  },
-                  child: Text('${_contests[index].name}',
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontFamily: 'Comfortaa',
+          final startTimeFormattedForNotification = DateFormat('E HH:mm a').format(_contests[index].startTime);
+
+            return Column(
+                children: [
+                  ListTile(
+                    title: GestureDetector(
+                      onTap: () async {
+                        final Uri uri = Uri.parse('https://codeforces.com/contests/${_contests[index].name}');
+                        if (await canLaunch(uri.toString())) {
+                          await launch(uri.toString());
+                        } else {
+                          throw 'Could not launch $uri';
+                        }
+                      },
+                      child: Text('${_contests[index].name}',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontFamily: 'Comfortaa',
+                        ),
+                      ),
+                    ),
+                    subtitle: Text('$startTimeFormatted',
+                      style: TextStyle(
+                        color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
+                        fontFamily: 'Comfortaa',
+                      ),
+                    ),
+                    trailing: Switch(
+                      value: isReminderEnabledList[index],
+                      onChanged: (value) {
+                        setState(() {
+                          isReminderEnabledList[index] = value;
+                          if (isReminderEnabledList[index]) {
+                            NotificationManager.showNotification(
+                                title: 'Contest Reminder',
+                                //change
+                                body: '${_contests[index].name} will start at $startTimeFormattedForNotification',
+                                payload: {
+                                  "navigate":"true",
+                                },
+                                actionButtons: [
+                                  NotificationActionButton(
+                                    key: 'check',
+                                    label: 'check it out',
+                                    actionType: ActionType.SilentAction,
+                                    color: Colors.green,
+                                  )
+                                ]);
+                            NotificationManager.setNotificationListeners();
+                            _showPopupMessage(context);
+                            // Add logic to set a reminder for this contest
+                          } else {
+                            // Add logic to cancel the reminder for this contest
+                          }
+                        });
+                      },
+                      activeColor: //const Color(0xff099141),
+                      Theme.of(context).brightness == Brightness.dark
+                          ?Color(0xff26b051)
+                          :Color(0xff26b051),
+                      inactiveTrackColor: //const Color(0xffe8f5e9),
+                      Theme.of(context).brightness == Brightness.dark
+                          ?Colors.grey[600]
+                          :Color(0xffe8f5e9),
                     ),
                   ),
-                ),
-                subtitle: Text('$startTimeFormatted',
-                  style: TextStyle(
-                    color: Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black,
-                    fontFamily: 'Comfortaa',
-                  ),
-                ),
-                trailing: Switch(
-                  value: isReminderEnabledList[index],
-                  onChanged: (value) {
-                    setState(() {
-                      isReminderEnabledList[index] = value;
-                      if (isReminderEnabledList[index]) {
-                        NotificationManager.showNotification(
-                            title: 'Contest Reminder',
-                            //change
-                            body: 'Check your account',
-                            payload: {
-                              "navigate":"true",
-                            },
-                            actionButtons: [
-                              NotificationActionButton(
-                                key: 'check',
-                                label: 'check it out',
-                                actionType: ActionType.SilentAction,
-                                color: Colors.green,
-                              )
-                            ]);
-                        NotificationManager.setNotificationListeners();
-                        _showPopupMessage(context);
-                        // Add logic to set a reminder for this contest
-                      } else {
-                        // Add logic to cancel the reminder for this contest
-                      }
-                    });
-                  },
-                  activeColor: //const Color(0xff099141),
-                  Theme.of(context).brightness == Brightness.dark
-                      ?Color(0xff26b051)
-                      :Color(0xff26b051),
-                  inactiveTrackColor: //const Color(0xffe8f5e9),
-                  Theme.of(context).brightness == Brightness.dark
-                      ?Colors.grey[600]
-                      :Color(0xffe8f5e9),
-                ),
-              ),
-              Divider(
-                thickness: 0.5,
-                color: Theme.of(context).colorScheme.secondary,
-              ), // Add a Divider after each ListTile
-            ],
-          );
+                  Divider(
+                    thickness: 0.5,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ), // Add a Divider after each ListTile
+                ],
+            );
         },
       )
 
@@ -213,7 +215,7 @@ class _ScheduleState extends State<Schedule> {
                   :Color(0xff075e34),
             ),
           ),
-          content: Text('An email will be sent to you 1 hour before the contest.',
+          content: Text('You will get a reminder before the contest.',
             style: TextStyle(
               fontFamily: 'Comfortaa',
               color: Theme.of(context).brightness == Brightness.dark
