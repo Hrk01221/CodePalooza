@@ -21,7 +21,7 @@ class Graph extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const BaseScreen()),
               );

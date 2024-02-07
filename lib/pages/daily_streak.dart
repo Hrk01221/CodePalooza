@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:realpalooza/Screens/base_screen.dart';
-import 'package:realpalooza/Screens/profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,7 +98,7 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: (){
-          Navigator.push(
+          Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const BaseScreen()),
             );

@@ -20,7 +20,7 @@ class MyButton2 extends StatelessWidget {
         decoration: BoxDecoration(
             color: Theme.of(context).brightness == Brightness.dark ? Colors.white.withOpacity(0.8) : Color(0xff40bd86),
           //color: const Color(0xff40bd86),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(100),
 
         ),
         child: Center(
