@@ -9,6 +9,7 @@ import 'package:realpalooza/Screens/edit_profile.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/constant/icons.dart';
 import 'package:realpalooza/pages/daily_streak.dart';
+import 'package:realpalooza/pages/skills.dart';
 import '../pages/graph_code.dart';
 
 class Profile extends StatefulWidget {
@@ -324,7 +325,7 @@ class _ProfileState extends State<Profile> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DailyStreakScreen(),
+                                    builder: (context) => Skills(),
                                   )
                               );
                             },
