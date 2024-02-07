@@ -5,6 +5,7 @@ import 'package:realpalooza/pages/notification_controller.dart';
 
 import '../Screens/settings.dart';
 class NotificationManager {
+  static String serverKey='ckgfhk';
   static Future<void> initializeNotifications() async {
     await AwesomeNotifications().initialize(
         'resource://drawable/app_icop',
