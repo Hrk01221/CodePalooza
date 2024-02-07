@@ -18,7 +18,7 @@ class LearnProgrammingPage extends StatelessWidget {
               'Learn Competitive Programming',
               style: TextStyle(
                 fontFamily: 'Comfortaa',
-                fontSize: 20,
+                fontSize: 18,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
@@ -87,6 +87,43 @@ class LearnProgrammingPage extends StatelessWidget {
               // Add more URLs for the topic as needed
             ],
           ),
+          TopicButton(
+            topicName: 'Binary Search',
+            urls: [
+              "https://www.geeksforgeeks.org/binary-search/",
+              "https://www.programiz.com/dsa/binary-search",
+              "https://www.youtube.com/watch?app=desktop&v=ARtYEZjOTbU&ab_channel=DBSTalks"
+              // Add more URLs for the topic as needed
+            ],
+          ),
+          TopicButton(
+            topicName: 'Unbounded Binary Search',
+            urls: [
+              "https://www.geeksforgeeks.org/find-the-point-where-a-function-becomes-negative/",
+              "https://www.techiedelight.com/unbounded-binary-search/",
+              "https://stackoverflow.com/questions/66609233/unbounded-binary-search-finding-the-point-where-a-monotonically-increasing-func"
+              // Add more URLs for the topic as needed
+            ],
+          ),
+          TopicButton(
+            topicName: 'Merge Sort',
+            urls: [
+              "https://www.geeksforgeeks.org/merge-sort/",
+              "https://www.programiz.com/dsa/merge-sort",
+              "https://www.javatpoint.com/merge-sort"
+              // Add more URLs for the topic as needed
+            ],
+          ),
+          TopicButton(
+            topicName: 'QuickSort',
+            urls: [
+              "https://geeksforgeeks.org/quick-sort/",
+              "https://www.programiz.com/dsa/quick-sort",
+              "https://www.javatpoint.com/quick-sort"
+              // Add more URLs for the topic as needed
+            ],
+          ),
+
           // Add more TopicButtons as needed
         ],
       ),
