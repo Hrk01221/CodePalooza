@@ -65,10 +65,8 @@ class _ChattingPageState extends State<ChattingPage> {
   }
 
   void sendMessage() async {
-
     if(_messageController.text.isNotEmpty){
       await _chatService.sendMessage(widget.recieverID, _messageController.text);
-
       _messageController.clear();
     }
 
@@ -100,6 +98,7 @@ class _ChattingPageState extends State<ChattingPage> {
           IconButton(
             onPressed: () {
               Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+              scrollDown();
             },
             icon: Icon(
               Theme.of(context).brightness == Brightness.dark
