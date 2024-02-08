@@ -100,7 +100,9 @@ class _DailyStreakScreenState extends State<DailyStreakScreen> {
           onPressed: (){
           Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const BaseScreen()),
+          MaterialPageRoute(builder: (context) => const BaseScreen(
+            selectedIndex: 0,
+          )),
             );
           },
         ),

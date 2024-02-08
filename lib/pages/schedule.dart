@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:realpalooza/Screens/base_screen.dart';
 import 'package:realpalooza/Theme/theme_provider.dart';
 import 'package:realpalooza/pages/competitive.dart';
 import 'package:http/http.dart' as http;
@@ -108,7 +109,7 @@ class _ScheduleState extends State<Schedule> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const Competitive()),
+                MaterialPageRoute(builder: (context) => const BaseScreen(selectedIndex: 2)),
               );
             },
           ),

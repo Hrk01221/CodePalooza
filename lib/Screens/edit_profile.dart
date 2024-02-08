@@ -97,7 +97,7 @@ class _EditProfilleState extends State<EditProfille> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return const BaseScreen();
+          return const BaseScreen(selectedIndex: 0,);
         },
       ),
     );
@@ -305,7 +305,7 @@ class _EditProfilleState extends State<EditProfille> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => BaseScreen(),
+                        builder: (context) => BaseScreen(selectedIndex: 0,),
                       )
                   );
                 }

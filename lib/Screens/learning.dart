@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:realpalooza/Screens/base_screen.dart';
 import 'package:realpalooza/components/my_text_field.dart';
 import 'package:realpalooza/pages/comment.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -224,62 +223,42 @@ class TopicDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            centerTitle: true,
-            title: Text(
-              topicName,
-              style: TextStyle(
-                fontFamily: 'Comfortaa',
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-                },
-                icon: Icon(
-                  Theme.of(context).brightness == Brightness.dark
-                      ? Icons.dark_mode
-                      : Icons.dark_mode_outlined,
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ?Colors.white.withOpacity(.8)
-                      :Colors.grey[800],
-                ),
-              ),
-            ],
-            leading: IconButton(
-              icon: (
-                  Icon(
-                    Theme.of(context).brightness == Brightness.dark
-                        ? Icons.arrow_back_ios_rounded
-                        : Icons.arrow_back_ios_rounded,
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ?Colors.white.withOpacity(.8)
-                        :Colors.grey[800],
-                  )
-              ),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => BaseScreen()),
-                );
-              },
-            ),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25),
-              ),
-            )
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        centerTitle: true,
+        title: Text(topicName,style: TextStyle(
+          fontFamily: 'Comfortaa',
+          fontSize: 20,
+          color: Theme.of(context).colorScheme.secondary,
         ),
+        ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+              },
+              icon: Icon(
+                Theme.of(context).brightness == Brightness.dark
+                    ? Icons.dark_mode
+                    : Icons.dark_mode_outlined,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ?Colors.white.withOpacity(.8)
+                    :Colors.grey[800],
+              ),
+            ),
+          ],
+
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(25),
+              bottomRight: Radius.circular(25),
+            ),
+          )
+      ),
       body: Expanded(
         child: Column(
           children: [
-            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
                 itemCount: urls.length,

@@ -75,7 +75,7 @@ class _ICPCranking extends State<ICPCranking> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const Competitive()),
+                MaterialPageRoute(builder: (context) => const BaseScreen(selectedIndex: 2)),
               );
             },
           ),

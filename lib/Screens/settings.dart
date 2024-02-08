@@ -3,15 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:realpalooza/Screens/settings_page/ChangePass.dart';
-import 'package:realpalooza/Screens/settings_page/ContestSetting.dart';
-import 'package:realpalooza/Screens/settings_page/Language.dart';
 import 'package:realpalooza/Screens/settings_page/PrivacyAndSecurity.dart';
 import 'package:realpalooza/Screens/settings_page/Social.dart';
 
 import '../Theme/theme_provider.dart';
-import '../pages/graph_code.dart';
 import '../pages/notification.dart';
-import 'base_screen.dart';
 import 'chatPage.dart';
 
 class Settings extends StatefulWidget {
@@ -20,7 +16,15 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<Settings> {
-  List<bool> switchValues = [true, true, false]; // Switch values list
+  List<bool> switchValues = [true, true, false];
+  String _selectedLanguage = 'English';
+  void _onLanguageChanged(String? newValue) {
+    if (newValue != null) {
+      setState(() {
+        _selectedLanguage = newValue;
+      });
+    }
+  }// Switch values list
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +99,7 @@ class _SettingsPageState extends State<Settings> {
               height: 10,
             ),
             buildAccountOptionRow(context, "Change password", 1),
-            buildAccountOptionRow(context, "Content settings", 2),
+            buildAccountOptionRow(context, "Theme", 2),
             buildAccountOptionRow(context, "Social", 3),
             buildAccountOptionRow(context, "Language", 4),
             buildAccountOptionRow(context, "Privacy and security", 5),
@@ -156,35 +160,59 @@ class _SettingsPageState extends State<Settings> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => ChangePasswordPage(), // Replace with your Change Password Page
+              builder: (context) => ChangePasswordPage(),
             ),
           );
-        } else if (title == "Content settings") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ContentSettingsPage(), // Replace with your Content Settings Page
-            ),
-          );
+        } else if (title == "Theme") {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
         } else if (title == "Social") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => SocialPage(), // Replace with your Social Page
+              builder: (context) => SocialPage(),
             ),
           );
         } else if (title == "Language") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LanguagePage(), // Replace with your Language Page
-            ),
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Select Language'),
+                content: DropdownButton<String>(
+                  value: _selectedLanguage,
+                  onChanged: _onLanguageChanged,
+                  items: <String>['English', 'Spanish', 'French', 'German']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Cancel',style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Comfortaa',color: Colors.black),),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _onLanguageChanged;
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Apply',style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'Comfortaa',color: Colors.black),),
+                  ),
+                ],
+              );
+            },
           );
-        } else if (title == "Privacy and security") {
+        }
+        else if(title=="Privacy and security"){
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => PrivacySecurityPage(), // Replace with your Privacy and Security Page
+              builder: (context) => PrivacySafetyPage(),
             ),
           );
         }
@@ -202,10 +230,21 @@ class _SettingsPageState extends State<Settings> {
                   color: Theme.of(context).colorScheme.secondary,
                   fontFamily: 'Comfortaa'),
             ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.green,
-            ),
+            if (title != "Language" && title != "Theme") // Show dropdown only if it's not language option
+              Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.green,
+              ),
+            if (title == "Language") // Show dropdown if it's language option
+              Icon(
+                Icons.arrow_drop_down,
+                color: Colors.green,
+              ),
+            if (title == "Theme")
+              Icon(
+                Icons.light_mode_outlined,
+                color: Colors.green,
+              ),
           ],
         ),
       ),
