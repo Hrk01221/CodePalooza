@@ -19,3 +19,4 @@ const schedule2 = 'lib/images/schedule2.png';
 const icpcarchive = 'lib/images/icpcarchive.png';
 const icpcrank = 'lib/images/icpcrank.png';
 const trophy = 'lib/images/trophy.png';
+const icpclogo = 'lib/images/icpclogo.png';
