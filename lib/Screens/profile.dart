@@ -325,7 +325,7 @@ class _ProfileState extends State<Profile> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => Skills(),
+                                    builder: (context) => SkillsPage(),
                                   )
                               );
                             },
